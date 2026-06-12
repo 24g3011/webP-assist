@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ケーキ通販アプリ作成チュートリアル</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Webアプリ作成 チュートリアル</h1>
+            <p>2.1節：ケーキ通販Webアプリの作成</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 課題文表示エリア（固定または上部） -->
+        <section class="assignment-section card">
+            <h2>📝 課題文</h2>
+            <div id="assignment-text" class="assignment-text">
+                <p id="task-part-1" class="task-line">フォームにケーキの注文数を入力して送信を押すと，注文内容を2つのテーブルに記録する．</p>
+                <div class="indent">
+                    <p id="task-part-2a" class="task-line"><strong>注文時刻テーブル o_time</strong></p>
+                    <ul class="indent">
+                        <li id="task-part-2b" class="task-line">id：フォームのactionで指定したエンドポイントのメソッド内でUUIDを生成し，それをidにする．#4 の2.4節の手法を使うとよい．</li>
+                        <li id="task-part-2c" class="task-line">time：デフォルト制約を付けているのでJavaで現在時刻を取得する必要はない →2.4節</li>
+                    </ul>
+                    <p id="task-part-2d" class="task-line"><strong>注文テーブル o_qtt</strong></p>
+                    <ul class="indent">
+                        <li id="task-part-2e" class="task-line">生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．</li>
+                    </ul>
+                </div>
+                <p id="task-part-3" class="task-line">注文を受けるたびに2つのテーブルをSELECT *で表示しておくと何かと捗る．</p>
+                <p id="task-part-4" class="task-line">注文id，時刻，商品名，単価，個数を売上データとして表示する．</p>
+                <ul class="indent">
+                    <li id="task-part-4a" class="task-line">客が見る情報と店員が見る情報は別のページに分けるのが普通だが，単一のページで表示してもよいことにする．</li>
+                    <li id="task-part-4b" class="task-line">3つのテーブルを結合した結果を表示すればよい．</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ステップ1 -->
+        <section class="step-section card" id="step1">
+            <h2 class="step-title">ステップ１：フォームにケーキの注文数を入力して送信ボタンを押せるようにする。</h2>
+            <p class="step-goal"><strong>目標：</strong>ケーキの注文数を入力できるフォームと、送信ボタンを作成する。</p>
+            <p class="step-scope"><strong>作業範囲：</strong><code>template/cakeshop.html</code></p>
+
+            <details>
+                <summary>1, 現状の把握</summary>
+                <div class="details-content">
+                    <h3>現状のHTMLコード</h3>
+                    <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+    &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;title&gt;ケーキ通販&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;ケーキの注文&lt;/h1&gt;
+
+        &lt;div&gt;
+            &lt;h2&gt;ケーキの一覧を表示してみる&lt;/h2&gt;
+            &lt;table border="1"&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;NAME&lt;/th&gt;&lt;th&gt;PRICE&lt;/th&gt;&lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr th:each="cake : ${cakeList}"&gt;
+                        &lt;td th:text="${cake.id}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    <h3>目標とするHTMLページ</h3>
+                    <div class="preview-box">
+                        <form>
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>商品</th>
+                                        <th>価格</th>
+                                        <th>注文数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>モンブラン</td>
+                                        <td>460</td>
+                                        <td><input type="number" size="2" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>アップルパイ</td>
+                                        <td>490</td>
+                                        <td><input type="number" size="2" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>チーズケーキ</td>
+                                        <td>480</td>
+                                        <td><input type="number" size="2" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ガトーショコラ</td>
+                                        <td>550</td>
+                                        <td><input type="number" size="2" value="0"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <input type="submit" value="送信する">
+                        </form>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>2, 比較</summary>
+                <div class="details-content">
+                    <p>現状のHTMLページと目標のページを見比べると、現状のNAME, PRICEの列はそのまま名前だけ変えて利用できそうだとわかる。またIDの列は一見必要無いように見えるが、課題の「生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．」において"フォームから受け取ったケーキID"というように、フォームからケーキIDを送信したいため、少し調整する必要がある。</p>
+                    <p>例えば、haik.htmlやtask.htmlの&lt;form&gt;において、<code>&lt;input type="hidden" name="id" th:value="${task.id}"&gt;</code>のような記述がある。これは「HTML上には表示されないが、一緒にデータを送信できる」部分なため、これをほぼそのまま利用するとよい。</p>
+                    
+                    <h3>修正後のHTMLソースコード</h3>
+                    <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+    &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;title&gt;ケーキ通販&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;ケーキの注文&lt;/h1&gt;
+
+        &lt;div&gt;
+            &lt;h2&gt;ケーキの一覧を表示してみる&lt;/h2&gt;
+            &lt;table border="1"&gt;
+                &lt;thead&gt;
+<span class="diff-del">-                   &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;NAME&lt;/th&gt;&lt;th&gt;PRICE&lt;/th&gt;&lt;/tr&gt;</span>
+<span class="diff-mod">+                   &lt;tr&gt;&lt;th&gt;商品&lt;/th&gt;&lt;th&gt;価格&lt;/th&gt;&lt;/tr&gt;</span>
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr th:each="cake : ${cakeList}"&gt;
+<span class="diff-del">-                       &lt;td th:text="${cake.id}"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+                       &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;</span>
+                        &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    <p class="note">なお、name="id"にあたる&lt;td&gt;に書いた"display: none;"はブラウザの画面上に表示しないためのものである。</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>3, テキスト入力欄</summary>
+                <div class="details-content">
+                    <p>続いて、注文数を入力するテキスト欄を追加する。方針としては、「1, HTMLのtableに、テキスト入力欄を置くための新しい列を追加する」「2, 追加した列の要素としてテキスト入力欄を追加する」の2ステップに分ける。</p>
+
+                    <h3>3.1, 列の追加</h3>
+                    <p>HTMLのtableに列を追加するのは、単に&lt;thead&gt;内の&lt;th&gt;と、&lt;tbody&gt;内の&lt;td&gt;を増やすだけでいい。</p>
+                    <pre class="code-block"><code>                &lt;thead&gt;
+<span class="diff-mod">!                   &lt;tr&gt;&lt;th&gt;商品&lt;/th&gt;&lt;th&gt;価格&lt;/th&gt;&lt;th class="diff-add"&gt;注文数&lt;/th&gt;&lt;/tr&gt;</span>
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr th:each="cake : ${cakeList}"&gt;
+                        &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+<span class="diff-add">+                       &lt;td&gt;&lt;/td&gt;</span>
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;</code></pre>
+
+                    <h3>3.2, テキスト入力欄の追加</h3>
+                    <p>新しく追加された「注文数」という列に、テキスト入力欄を追加する。&lt;input&gt;フィールドのtype属性値にtextを指定して&lt;input type="text"&gt;とすればよい。</p>
+                    <pre class="code-block"><code>                &lt;tbody&gt;
+                    &lt;tr th:each="cake : ${cakeList}"&gt;
+                        &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+<span class="diff-mod">!                       &lt;td&gt;&lt;input type="text" name="count"&gt;&lt;/td&gt;</span>
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;</code></pre>
+                </div>
+            </details>
+
+            <details>
+                <summary>4, フォーム化と送信ボタンの用意</summary>
+                <div class="details-content">
+                    <p>ここまで来たら表示部分は送信ボタンを用意するだけ。作成した&lt;table&gt;を&lt;form&gt;で囲い、最後に送信ボタンを追加する。</p>
+                    <pre class="code-block"><code><span class="diff-add">+       &lt;form action="/order"&gt;</span>
+            &lt;table border="1"&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;商品&lt;/th&gt;
+                        &lt;th&gt;価格&lt;/th&gt;
+                        &lt;th&gt;注文数&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr th:each="cake : ${cakeList}"&gt;
+                        &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;input type="text" name="count" value="0"&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+<span class="diff-add">+           &lt;input type="submit" value="注文する"&gt;</span>
+<span class="diff-add">+       &lt;/form&gt;</span></code></pre>
+                </div>
+            </details>
+
+            <details>
+                <summary>5, ステップアップ（入力制御）</summary>
+                <div class="details-content">
+                    <p>「注文数」には数字しか受け取る必要が無いため、typeにtextではなくnumberを指定し、最小値としてmin="0"を追加する。</p>
+                    <pre class="code-block"><code><span class="diff-mod">!                       &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;</span></code></pre>
+                </div>
+            </details>
+        </section>
+
+        <!-- ステップ2 -->
+        <section class="step-section card" id="step2">
+            <h2 class="step-title">ステップ２：注文内容を２つのテーブルに記録する</h2>
+            <p class="step-goal"><strong>目標：</strong>DAOに2つのINSERT文を実行するorderメソッドを作成し、コントローラーから呼び出す。</p>
+            <p class="step-scope"><strong>作業範囲：</strong><code>/demo/CakeShop.java</code> & <code>/demo/CakeDao.java</code></p>
+
+            <details>
+                <summary>1, 現状の確認</summary>
+                <div class="details-content">
+                    <h3>CakeShop.java</h3>
+                    <pre class="code-block"><code>@RequestMapping("/")
+    String home(Model model) {
+        List&lt;Map&lt;String,Object&gt;&gt; cakeList = dao.select7();
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop";
+    }</code></pre>
+                </div>
+            </details>
+
+            <details>
+                <summary>2, HTMLからの受け取り(コントローラーの処理-前段階)</summary>
+                <div class="details-content">
+                    <p>action="/order"に対応するため、アノテーションは"/order"にする。また、returnには"redirect:/"を指定する。</p>
+                    
+                    <details class="sub-details">
+                        <summary>💡 RequestMappingの解説（クリックで展開）</summary>
+                        <div class="sub-details-content">
+                            <p>1つ目のパターン（Modelを使用）:</p>
+                            <pre class="code-block"><code>@RequestMapping("/Kuchou")
+String haiku(<span class="highlight">Model model</span>){
+    return <span class="highlight">"haikulist.html"</span>;
+}</code></pre>
+                            <p>2つ目のパターン（RequestParamを使用）:</p>
+                            <pre class="code-block"><code>@RequestMapping("/addHaiku")
+String addHaiku(<span class="highlight">@RequestParam("haiku")</span> Haiku haiku){
+    return <span class="highlight">"redirect:/Kuchou"</span>;
+}</code></pre>
+                        </div>
+                    </details>
+
+                    <h3>修正後のCakeShop.java</h3>
+                    <pre class="code-block"><code><span class="diff-add">+   @RequestMapping("/order")</span>
+<span class="diff-add">+   String order(@RequestParam("id") List&lt;Integer&gt; ids, @RequestParam("count") List&lt;Integer&gt; counts) {</span>
+<span class="diff-add">+       // まだ何も処理を書いてない。</span>
+<span class="diff-add">+       return "redirect:/";</span>
+<span class="diff-add">+   }</span></code></pre>
+
+                    <details class="sub-details">
+                        <summary>💡 データ受け取りの解説（クリックで展開）</summary>
+                        <div class="sub-details-content">
+                            <p>cakeshop.htmlの&lt;form&gt;から送信されたデータは、複数行の"count"の値がまとめて渡されるため、Listとして受け取ることで対処します。</p>
+                            <pre class="code-block"><code>@RequestMapping("/order")
+    String order(@RequestParam("id") List&lt;Integer&gt; ids, @RequestParam("count") List&lt;Integer&gt; counts) {
+        for(int i = 0; i&lt;counts.size(); i++){
+            System.out.println(counts.get(i));
+        }
+        return "redirect:/";
+    }</code></pre>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

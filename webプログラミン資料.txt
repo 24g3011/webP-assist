@@ -1,0 +1,452 @@
+/* 下記の課題文を入れ子にして表示
+#フォームにケーキの注文数を入力して送信を押すと，注文内容を2つのテーブルに記録する．
+##注文時刻テーブル o_time
+###id：フォームのactionで指定したエンドポイントのメソッド内でUUIDを生成し，それをidにする．#4 の2.4節の手法を使うとよい．
+###time：デフォルト制約を付けているのでJavaで現在時刻を取得する必要はない →2.4節
+##注文テーブル o_qtt
+###生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．
+##注文を受けるたびに2つのテーブルをSELECT *で表示しておくと何かと捗る．
+#注文id，時刻，商品名，単価，個数を売上データとして表示する．
+##客が見る情報と店員が見る情報は別のページに分けるのが普通だが，単一のページで表示してもよいことにする．
+##3つのテーブルを結合した結果を表示すればよい．
+
+*/
+
+課題文の分解を行う。
+「１，フォームにケーキの注文数を入力して送信を押すと、」、「２，注文内容を２つのテーブルに記録する。」、「および１，２の補助説明」、「３，注文id, 時刻, 商品名, 単価, 個数を売上データとして(受け取って)」、「４，表示する」「および３の補助説明」の部分に課題文を分解し、ステップごとに進んでいく。その際、各ステップごとに課題の全文を表示しつつも、そのステップで取り組む部分または関係する部分以外はグレーアウトしておく。
+
+ステップ１：フォームにケーキの注文数を入力して送信ボタンを押せるようにする。
+→ケーキの注文数を入力できるフォームと、送信ボタンを作成する。
+
+作業範囲：template/cakeshop.html
+
+1, 現状の把握
+--HTMLコードと、それによって表示されるページの両方を掲載する。
+
+```
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>ケーキ通販</title>
+    </head>
+    <body>
+        <h1>ケーキの注文</h1>
+
+        <div>
+            <h2>ケーキの一覧を表示してみる</h2>
+            <table border="1">
+                <thead>
+                    <tr><th>ID</th><th>NAME</th><th>PRICE</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cake : ${cakeList}">
+                        <td th:text="${cake.id}"></td>
+                        <td th:text="${cake.name}"></td>
+                        <td th:text="${cake.price}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+```
+
+目標
+--目標とするHTMLページのみを掲載する(HTMLソースは載せない)
+```
+<form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>商品</th>
+                        <th>価格</th>
+                        <th>注文数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>モンブラン</td>
+                        <td>460</td>
+                        <td><input type="number" size="2" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>アップルパイ</td>
+                        <td>490</td>
+                        <td><input type="number" size="2" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>チーズケーキ</td>
+                        <td>480</td>
+                        <td><input type="number" size="2" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>ガトーショコラ</td>
+                        <td>550</td>
+                        <td><input type="number" size="2" value="0"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="送信する">
+        </form>
+```
+
+2, 比較
+現状のHTMLページと目標のページを見比べると、現状のNAME, PRICEの列はそのまま名前だけ変えて利用できそうだとわかる。またIDの列は一見必要無いように見えるが、課題の「生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．」において"フォームから受け取ったケーキID"というように、フォームからケーキIDを送信したいため、少し調整する必要がある。例えば、haik.htmlやtask.htmlの<form>において、<input type="hidden" name="id" th:value="${task.id}">のような記述がある。これは「HTML上には表示されないが、一緒にデータを送信できる」部分なため、これをほぼそのまま利用するとよい。
+まずはこの２つの作業を進める。
+
+--修正後のHTMLソースコードを載せて比較する。削除された部分を赤く、変更された部分を青く、追加された部分を緑にする。
+```
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>ケーキ通販</title>
+    </head>
+    <body>
+        <h1>ケーキの注文</h1>
+
+        <div>
+            <h2>ケーキの一覧を表示してみる</h2>
+            <table border="1">
+                <thead>
+                    <tr><th>商品</th><th>価格</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cake : ${cakeList}">
+			<td style="display: none;"><input type="hidden" name="id" th:value="${cake.id}"></td>
+                        <td th:text="${cake.name}"></td>
+                        <td th:text="${cake.price}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+```
+--修正後のHTMLページも表示する。
+
+なお、name="id"にあたる<td>に書いた"display: none;"はブラウザの画面上に表示しないためのものである。
+
+3, テキスト入力欄 
+続いて、注文数を入力するテキスト欄を追加する。方針としては、「1, HTMLのtableに、テキスト入力欄を置くための新しい列を追加する」「追加した列の要素としてテキスト入力欄を追加する」の2ステップに分ける。
+
+3.1, 列の追加
+HTMLのtableに列を追加するのは、単に<thead>内の<th>と、<tbody>内の<td>を増やすだけでいい。逆に、先程は<thead>内のIDという<th>と<tbody>内の<td>を削除したため、tableからIDという列が無くなった。
+
+--修正後のコードを載せて比較する。消された部分は赤く、変更された部分は青く、追加された部分は緑で表示する。
+```
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>ケーキ通販</title>
+    </head>
+    <body>
+        <h1>ケーキの注文</h1>
+
+        <div>
+            <h2>ケーキの一覧を表示してみる</h2>
+            <table border="1">
+                <thead>
+                    <tr><th>商品</th><th>価格</th><th>注文数</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cake : ${cakeList}">
+			<td style="display: none;"><input type="hidden" name="id" th:value="${cake.id}"></td>
+                        <td th:text="${cake.name}"></td>
+                        <td th:text="${cake.price}"></td>
+			<td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+```
+--修正後のHTMLページも表示する。
+
+3.2, テキスト入力欄の追加
+新しく追加された「注文数」という列に、テキスト入力欄を追加する。テキスト入力欄は、DemoApplication3.javaのタスク管理アプリケーションに使われるtask.htmlビューや、Kuchou.javaの俳句アプリケーションに使われるhaiku.htmlビューで何度か利用してきた。
+<input>フィールドのtype属性値にtextを指定して<input type="text">とすればよい。また、コントローラーから注文数を受け取れるようにname属性を追加しておく。最終的に、<input type="text" name="count">などとすればよい。
+HTMLのtableにおいて、列の要素は<tbody>内の<td>要素に記述される。
+
+--修正後のコードを載せて比較する。削除された部分を赤く、変更された部分を青く、追加された部分を緑にする。
+
+```
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>ケーキ通販</title>
+    </head>
+    <body>
+        <h1>ケーキの注文</h1>
+
+        <div>
+            <h2>ケーキの一覧を表示してみる</h2>
+            <table border="1">
+                <thead>
+                    <tr><th>商品</th><th>価格</th><th>注文数</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cake : ${cakeList}">
+			<td style="display: none;"><input type="hidden" name="id" th:value="${cake.id}"></td>
+                        <td th:text="${cake.name}"></td>
+                        <td th:text="${cake.price}"></td>
+			<td><input type="text" name="count"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+```
+--修正後のHTMLページも表示する。
+
+4, フォーム化と送信ボタンの用意
+ここまで来たら表示部分は送信ボタンを用意するだけ。しかし、HTMLのコード上で送信ボタンを押した時に送りたいデータを<form>で囲わないといけない。ただこれも実は簡単で、送りたいデータとして「注文数」を含んだテーブルをここまでで作成してきたので、あとは<table>を<form>で囲い、最後に送信ボタンを追加するだけである。なお、送信ボタンはテキスト入力欄同様に、これまでのコントローラーの資料に載っているものと同じものを利用する。
+
+--コード比較。
+```
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ケーキ通販</title>
+</head>
+
+<body>
+    <h1>ケーキの注文</h1>
+
+    <div>
+        <h2>ケーキの一覧を表示してみる</h2>
+        <form action="/order">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>商品</th>
+                        <th>価格</th>
+                        <th>注文数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cake : ${cakeList}">
+			<td style="display: none;"><input type="hidden" name="id" th:value="${cake.id}"></td>
+                        <td th:text="${cake.name}"></td>
+                        <td th:text="${cake.price}"></td>
+                        <td><input type="text" name="count" value="0"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="注文する">
+        </form>
+    </div>
+</body>
+
+</html>
+```
+--修正後のHTMLページも表示する。
+
+自分の環境できちんと動作し、送信ボタンを押した時にURLに/order?count=0&count=0...などと表示されることを確認したら、ステップ１の完了である。
+
+5, ステップアップ
+ここでは、実際に課題で要求されているわけではないが、非常に簡単に、より本格的なメニュー表に近づけられる技術を記載する。前の項でcakeshop.htmlに<input type="text" name="count" value="0">を追加した。<input type="text">は「text (=/文字列)を入力できるフィールドを用意する」というような意味の処理である。ここで、目標としている*ステップ1の1-2.htmlページ部分 では、入力される値は「注文数」のことを指すため数字しか受け取る必要が無い。むしろ、注文数の部分に「いち」や漢数字の「一」を入力されると、コントローラー側での処理が非常に難しくなってしまう。そこで、そもそも<input>のtypeにtextではなく、数値を指定して数字だけを入力できるようにした方がよい。
+
+--コード比較。
+```
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ケーキ通販</title>
+</head>
+
+<body>
+    <h1>ケーキの注文</h1>
+
+    <div>
+        <h2>ケーキの一覧を表示してみる</h2>
+        <form action="/order">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>商品</th>
+                        <th>価格</th>
+                        <th>注文数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cake : ${cakeList}">
+			<td style="display: none;"><input type="hidden" name="id" th:value="${cake.id}"></td>
+                        <td th:text="${cake.name}"></td>
+                        <td th:text="${cake.price}"></td>
+                        <td><input type="number" name="count" value="0" min="0"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="注文する">
+        </form>
+    </div>
+</body>
+
+</html>
+```
+--修正後のHTMLページも表示する。
+
+ここで、<input>の属性としてさらにmin="0"を追加している。これはその名の通り、最小値として0を設定するということ。この<input>フィールドにおいて、入力される数値が0を下回らないようにしている。
+
+
+
+ステップ２　注文内容を２つのテーブルに記録する
+→DAOに2つのINSERT文を実行するorderメソッドを作成し、コントローラーから呼び出す。
+
+作業範囲： /demo/CakeShop.java   &  /demo/CakeDao.java
+
+作業範囲は多いが、順番に作業していけばそこまで難しいことはない。
+
+1, 現状の確認
+
+--CakeShop.javaを示す。
+
+```
+package com.example.demo;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@SpringBootApplication
+@Controller
+public class CakeShop {
+    public static void main(String[] args) {
+        SpringApplication.run(CakeShop.class, args);
+    }
+
+    private final CakeDao dao;
+
+    CakeShop(CakeDao dao) {
+        this.dao = dao;
+    }
+
+    @RequestMapping("/")
+    String home(Model model) {
+        List<Map<String,Object>> cakeList = dao.select7();
+        //System.out.println(cakeList); <--確認コード
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop"; // ビューの名前
+    }
+}
+```
+
+2, HTMLからの受け取り(コントローラーの処理-前段階)
+現状のCakeShop.javaにはcakeshop.htmlの<form>内のaction="/order"に対応するマッピングが存在しない。そこで、まずはcakeshop.htmlでsubmitボタンが押され、http://localhost:8080/orderが要求された時のRequestMappingを追加する。
+
+--ここから下はプルダウンにしておき、詳細を読みたい場合にクリックすると開かれるようにする。
+Kuchou.javaやDemoApplication3.javaにあるRequestMappingを参考にすると、中身の処理を除いて大きく２種類のRequestMappingが存在することがわかる。１つ目は、
+--コード比較はいらない。代わりに、Model modelの部分とreturn "haikulist.html";の部分に薄いハイライトを。
+```
+@RequesMapping("/Kuchou")
+String haiku(Model model){
+	--省略--
+	return "haikulist.html";
+}
+```
+というような、メソッドの引数にModel modelを持ち、returnで"**(htmlファイルの名前)"を指定するものである。２つ目は、
+--コード比較はいらない。代わりに、@RequesParamとreturnの部分に薄いハイライトを。
+```
+@RequestMapping("/addHaiku")
+String addHaiku(@RequestParam("haiku" Haiku haiku){
+	--省略--
+	return "redirect:/Kuchou";
+}
+```
+というような、メソッドの引数に@RequestParamを持ち、returnで"redirect:/***(アノテーションの名前)"を指定するものである。詳しい説明や違いが気になる場合は調べたり過去の資料を見るとよい。今回この２つのRequestMappingの違いとして大切なのは、「1つ目のRequestMappingは今のところ、1つのコントローラーにつき1つしか書かない」ということである。
+この流れに従うと、現在のCakeShop.javaには既に
+
+--コード比較はいらない。代わりに、Model modelとreturn "cakeshop"に薄くハイライトを。
+```
+@RequestMapping("/")
+    String home(Model model) {
+        List<Map<String,Object>> cakeList = dao.select7();
+        //System.out.println(cakeList); <--確認コード
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop"; // ビューの名前
+    }
+```
+というコードがあり、これは引数にModel modelを持ち、returnで"cakeshop(.html)"を指定しているため、１つ目のRequestMappingがもう使われている。そこで、ここからは２つ目のRequestMappingの書き方を利用していく。
+--ここまで、デフォルトでは閉じられている。
+
+action="order"に対応するため、アノテーションは"/order"にする。また、returnには"redirect:/"を指定するため、型宣言はStringである。@RequestParamの扱いが難しいので、ここではList<Integer> idsとList<Integer> countsとしておく。
+--コード比較。削除された部分は赤く、変更された部分は青く、追加された部分は緑に。
+```
+package com.example.demo;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@SpringBootApplication
+@Controller
+public class CakeShop {
+    public static void main(String[] args) {
+        SpringApplication.run(CakeShop.class, args);
+    }
+
+    private final CakeDao dao;
+
+    CakeShop(CakeDao dao) {
+        this.dao = dao;
+    }
+
+    @RequestMapping("/")
+    String home(Model model) {
+        List<Map<String, Object>> cakeList = dao.select7();
+        // System.out.println(cakeList); <--確認コード
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop"; // ビューの名前
+    }
+
+    @RequestMapping("/order")
+    String order(@RequestParam("id") List<Integer> ids,@RequestParam("count") List<Integer> counts) {
+        // まだ何も処理を書いてない。
+        return "redirect:/";
+    }
+}
+
+```
+--ここから下はプルダウンにしておき、詳細を読みたい場合にクリックすると開かれるようにする。
+cakeshop.htmlの<form>では、現在「モンブラン、アップルパイ、チーズケーキ、ガトーショコラ」の４つの行が表示され、それぞれ注文数がname="count"で設定されている。ここで、submitのボタンを押すとaction="/order"としてコントローラーに"count"の値達が渡ることになるが、コントローラー側から見た時、渡されたデータはMap<String, List<Object>>のような型で{"count", [モンブランのcount, アップルパイのcount, チーズケーキのcount, ガトーショコラのcount]}のようになっている。そのため、@RequestParam("count")でcountの値を受け取ろうとすると、[モンブランのcount,...]が渡されるため、Listとして受け取ることで対処する。
+--ここまでデフォルトで閉じられている。
+ここで、
+--部分的なコード比較。
+```
+@RequestMapping("/order")
+    String order(@RequestParam("id") List<Integer> ids, @RequestParam("count") List<Integer> counts) {
+        for(int i = 0: i<counts.size(); i++){
+            System.out.println(counts[i]);
+        }
+        return "redirect:/";
+    }
+```
+とすると、モンブラン、アップルパイ、チーズケーキ、ガトーショコラの注文数をそれぞれ0,1,0,2などにした時、
+```
+0
+1
+0
+2
+```
+とターミナルに出力されることから、countsにはこの順でcountの値が格納されていることがわかる。また、idについても同様である。
