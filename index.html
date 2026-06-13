@@ -41,8 +41,6 @@
                     <li id="task-part-4b" class="task-line">3つのテーブルを結合した結果を表示すればよい．</li>
                 </ul>
             </div>
-            <p>課題文の分解を行う。<br>
-            「１，フォームにケーキの注文数を入力して送信を押すと、」、「２，注文内容を２つのテーブルに記録する。」、「および１，２の補助説明」、「３，注文id, 時刻, 商品名, 単価, 個数を売上データとして(受け取って)」、「４，表示する」「および３の補助説明」の部分に課題文を分解し、ステップごとに進んでいく。その際、各ステップごとに課題の全文を表示しつつも、そのステップで取り組む部分または関係する部分以外はグレーアウトしておく。</p>
         </section>
 
         <!-- ステップ1 -->
@@ -81,11 +79,11 @@
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>ID</th><th>NAME</th><th>PRICE</th></tr></thead><tbody><tr><td>1</td><td>モンブラン</td><td>460</td></tr><tr><td>2</td><td>アップルパイ</td><td>490</td></tr><tr><td>3</td><td>チーズケーキ</td><td>480</td></tr><tr><td>4</td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 20 + 'px';" style="border: none;"></iframe>
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>ID</th><th>NAME</th><th>PRICE</th></tr></thead><tbody><tr><td>1</td><td>モンブラン</td><td>460</td></tr><tr><td>2</td><td>アップルパイ</td><td>490</td></tr><tr><td>3</td><td>チーズケーキ</td><td>480</td></tr><tr><td>4</td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
                 <h3>目標</h3>
                 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" size="2" value="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" size="2" value="0"></td></tr><tr><td>チーズケーキ</td><td>480</td><td><input type="number" size="2" value="0"></td></tr><tr><td>ガトーショコラ</td><td>550</td><td><input type="number" size="2" value="0"></td></tr></tbody></table><br><input type="submit" value="送信する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 20 + 'px';" style="border: none;"></iframe>
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" size="2" value="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" size="2" value="0"></td></tr><tr><td>チーズケーキ</td><td>480</td><td><input type="number" size="2" value="0"></td></tr><tr><td>ガトーショコラ</td><td>550</td><td><input type="number" size="2" value="0"></td></tr></tbody></table><br><input type="submit" value="送信する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
                 <h3>2, 比較</h3>
                 <p>現状のHTMLページと目標のページを見比べると、現状のNAME, PRICEの列はそのまま名前だけ変えて利用できそうだとわかる。またIDの列は一見必要無いように見えるが、課題の「生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．」において"フォームから受け取ったケーキID"というように、フォームからケーキIDを送信したいため、少し調整する必要がある。例えば、<i>haik.html</i>や<i>task.html</i>の<i>&lt;form&gt;</i>において、<code>&lt;input type="hidden" name="id" th:value="${task.id}"&gt;</code>のような記述がある。これは「HTML上には表示されないが、一緒にデータを送信できる」部分なため、これをほぼそのまま利用するとよい。</p>
@@ -120,7 +118,7 @@
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
                 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="3"></td><td>チーズケーキ</td><td>480</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="4"></td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 20 + 'px';" style="border: none;"></iframe>
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="3"></td><td>チーズケーキ</td><td>480</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="4"></td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
                 
                 <p>なお、<i>name="id"</i>にあたる<i>&lt;td&gt;</i>に書いた"display: none;"はブラウザの画面上に表示しないためのものである。</p>
 
@@ -128,7 +126,7 @@
                 <p>続いて、注文数を入力するテキスト欄を追加する。方針としては、「1, HTMLのtableに、テキスト入力欄を置くための新しい列を追加する」「追加した列の要素としてテキスト入力欄を追加する」の2ステップに分ける。</p>
 
                 <h4>3.1, 列の追加</h4>
-                <p>HTMLのtableに列を追加するのは、単に<i>&lt;thead&gt;</i>内の<i>&lt;th&gt;</i>と、<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を増やすだけでいい。逆に、先程は<i>&lt;thead&gt;</i>内のIDという<i>&lt;th&gt;</i>と<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を削除したため、tableからIDという列が無くなった。</p>
+                <p>HTMLのtableに列を追加するのは、単に<i>&lt;thead&gt;</i>内の<i>&lt;th&gt;</i>と、<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を増やすだけでいい。逆に、先程は<i>&lt;thead&gt;</i>内のIDという<i>&lt;th&gt;</i>と<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を削除または見えなくしたため、tableからIDという列が無くなった。</p>
                 <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
     &lt;head&gt;
@@ -158,7 +156,7 @@
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
                 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td></td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 20 + 'px';" style="border: none;"></iframe>
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td></td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
                 <h4>3.2, テキスト入力欄の追加</h4>
                 <p>新しく追加された「注文数」という列に、テキスト入力欄を追加する。テキスト入力欄は、<i>DemoApplication3.java</i>のタスク管理アプリケーションに使われる<i>task.html</i>ビューや、<i>Kuchou.java</i>の俳句アプリケーションに使われる<i>haiku.html</i>ビューで何度か利用してきた。<br>
@@ -185,7 +183,7 @@
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
 <span class="diff-del">-                       &lt;td&gt;&lt;/td&gt;</span>
-<span class="diff-mod">+                       &lt;td&gt;&lt;input type="text" name="count"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+                       &lt;td&gt;&lt;input type="text" name="count"&gt;&lt;/td&gt;</span>
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -193,7 +191,7 @@
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
                 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td><input type="text" name="count"></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td><input type="text" name="count"></td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 20 + 'px';" style="border: none;"></iframe>
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td><input type="text" name="count"></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td><input type="text" name="count"></td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
                 <h3>4, フォーム化と送信ボタンの用意</h3>
                 <p>ここまで来たら表示部分は送信ボタンを用意するだけ。しかし、HTMLのコード上で送信ボタンを押した時に送りたいデータを<i>&lt;form&gt;</i>で囲わないといけない。ただこれも実は簡単で、送りたいデータとして「注文数」を含んだテーブルをここまでで作成してきたので、あとは<i>&lt;table&gt;</i>を<i>&lt;form&gt;</i>で囲い、最後に送信ボタンを追加するだけである。なお、送信ボタンはテキスト入力欄同様に、これまでのコントローラーの資料に載っているものと同じものを利用する。</p>
@@ -224,7 +222,7 @@
                         &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
-<span class="diff-mod">+                       &lt;td&gt;&lt;input type="text" name="count" value="0"&gt;&lt;/td&gt;</span>
+                        &lt;td&gt;&lt;input type="text" name="count"&gt;&lt;/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -235,7 +233,7 @@
 
 &lt;/html&gt;</code></pre>
                 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="text" name="count" value="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="text" name="count" value="0"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 20 + 'px';" style="border: none;"></iframe>
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="text" name="count"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="text" name="count"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
                 <p>自分の環境できちんと動作し、送信ボタンを押した時にURLに<i>/order?count=0&count=0...</i>などと表示されることを確認したら、ステップ１の完了である。</p>
 
@@ -276,9 +274,9 @@
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
                 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" name="count" value="0" min="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" name="count" value="0" min="0"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 20 + 'px';" style="border: none;"></iframe>
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" name="count" value="0" min="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" name="count" value="0" min="0"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
-                <p>ここで、<i>&lt;input&gt;</i>の属性としてさらに<i>min="0"</i>を追加している。これはその名の通り、最小値として0を設定するということ。この<i>&lt;input&gt;</i>フィールドにおいて、入力される数値が0を下回らないようにしている。</p>
+                <p>ここで、<i>&lt;input&gt;</i>の属性としてさらに<i>min="0"</i>と<i>value="0"</i>を追加している。"min"はその名の通り、最小値として0を設定するということ。この<i>&lt;input&gt;</i>フィールドにおいて、入力される数値が0を下回らないようにしている。"value"はデフォルト値を設定している。</p>
             </div>
         </section>
 
@@ -417,6 +415,275 @@ public class CakeShop {
 0
 2</code></pre>
                 <p>とターミナルに出力されることから、countsにはこの順でcountの値が格納されていることがわかる。また、idについても同様である。</p>
+
+                <h3>3, 注文データに対するループ処理の追加</h3>
+                <p>フォームから送信された配列データ（リスト）を受け取った後、どのケーキが何個注文されたのかを把握し、データベースに保存する準備をする必要がある。<br>
+                先ほど確認した通り、引数 <code>counts</code> にはフォームにあるケーキの順番通りに注文数が格納されている。そのため、リストの要素数分だけ <code>for</code> ループを回し、注文数が0より大きい（つまり実際に注文された）ケーキについてのみ、データベースへ記録するためのDAOのメソッドを呼び出すように処理を記述する。</p>
+                <p><i>CakeShop.java</i></p>
+                <pre class="code-block"><code>    @RequestMapping("/order")
+    String order(@RequestParam("id") List&lt;Integer&gt; ids,@RequestParam("count") List&lt;Integer&gt; counts) {
+<span class="diff-del">-       // まだ何も処理を書いてない。</span>
+<span class="diff-add">+       for(int i = 0; i&lt;counts.size(); i++){</span>
+<span class="diff-add">+           if(counts.get(i) &gt; 0){</span>
+<span class="diff-add">+               //DAO のorderメソッドを呼び出す。</span>
+<span class="diff-add">+           }</span>
+<span class="diff-add">+       }</span>
+        return "redirect:/";
+    }</code></pre>
+
+                <h3>4, DAOへのメソッド追加に向けた準備</h3>
+                <p>コントローラー側で注文データを受け取り、必要なデータだけを抽出する準備が整った。次は、データベースへ実際にデータを保存するための処理をDAOに追加していく。<br>
+                課題文の通り、今回は「注文時刻テーブル <code>o_time</code>」と「注文テーブル <code>o_qtt</code>」の2つのテーブルにデータをINSERTする必要がある。まずは現状の <i>CakeDao.java</i> 全体を確認し、どこに新しいメソッドを追加すべきかを把握する。</p>
+                <p><i>CakeDao.java</i></p>
+                <pre class="code-block"><code>package com.example.demo;
+
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class CakeDao {
+    private final JdbcTemplate jdbcTemplate;
+
+    CakeDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    String select2(int id) {
+        String sql = "SELECT price FROM cake WHERE id=?"; // ? はプレースホルダ
+        String price = jdbcTemplate.queryForObject(sql, String.class, id); // ここで ? を引数 id の値に置き換える
+        return price;
+    }
+
+    /* 今回は省略のため、各自が実装している他の必要のないselectメソッドはこのコメントアウト部分に記述されていることにする。*/
+
+    public List&lt;Map&lt;String, Object&gt;&gt; select10b() {  // 3.2節で説明されたメソッド
+        String sql = """
+                SELECT
+                    o_time.id,
+                    o_time.time,
+                    cake.name,
+                    cake.price,
+                    o_qtt.quantity
+                FROM o_time       -- テーブル1
+                    INNER JOIN o_qtt  -- テーブル2
+                    ON o_time.id = o_qtt.time_id
+                    INNER JOIN cake   -- テーブル3
+                    ON o_qtt.cake_id = cake.id;
+                    """;
+        List&lt;Map&lt;String, Object&gt;&gt; result = jdbcTemplate.queryForList(sql);
+        return result;
+    }
+
+    public List&lt;Map&lt;String,Object&gt;&gt; select7() { // 3.2節で説明したメソッド
+        String sql = "SELECT * FROM cake";
+        List&lt;Map&lt;String,Object&gt;&gt; result = jdbcTemplate.queryForList(sql); // マップを要素とするリスト
+        return result;
+    }
+}</code></pre>
+
+                <h3>5, 新しいメソッドを作る（注文時刻テーブルへの保存）</h3>
+                <p>まずは、注文時刻テーブル <code>o_time</code> に注文のIDを登録するための新しいメソッド <code>orderT</code> を作成する。このテーブルにはIDのみをJava側から渡し、時刻（time）はデータベース側のデフォルト制約によって自動的に現在時刻が設定されるようにする。<br>
+                過去の資料（3.3節）で紹介されているINSERTの基本形を思い出し、それを応用して実装する。</p>
+                
+                <details>
+                    <summary>参考：3.3節で紹介されているコード</summary>
+                    <div class="details-content">
+                        <pre class="code-block"><code>int newcake(String name, int price) {
+    String sql = "INSERT INTO cake(name, price) VALUES(?, ?)";
+    int count = jdbcTemplate.update(sql, name, price);
+    return count;
+}</code></pre>
+                    </div>
+                </details>
+                
+                <p>上記のコードを参考に、<i>CakeDao.java</i> にメソッドを追加する。<code>INSERT INTO o_time(id) VALUES(?)</code> というSQL文を用意し、コントローラーから受け取る文字列型の <code>time_id</code> をプレースホルダ <code>?</code> に当てはめて実行する。</p>
+                <p><i>CakeDao.java</i></p>
+                <pre class="code-block"><code>package com.example.demo;
+
+import java.util.List;
+import java.util.Map;
+import java.time.LocalTime;
+import org.springframework.jdbc.core.JdbcTemplate;
+<span class="diff-add">+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;</span>
+<span class="diff-add">+import org.springframework.jdbc.core.namedparam.SqlParameterSource;</span>
+<span class="diff-add">+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;</span>
+<span class="diff-add">+import org.springframework.stereotype.Service;</span>
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class CakeDao {
+    private final JdbcTemplate jdbcTemplate;
+
+    CakeDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    String select2(int id) {
+        String sql = "SELECT price FROM cake WHERE id = ?";
+        String price = jdbcTemplate.queryForObject(sql, String.class, id);
+        return price;
+    }
+
+    public List&lt;Map&lt;String, Object&gt;&gt; select10b() {
+        String sql = """
+                SELECT
+                    o_time.id,
+                    o_time.time,
+                    cake.name,
+                    cake.price,
+                    o_qtt.quantity
+                FROM o_time       -- テーブル1
+                    INNER JOIN o_qtt  -- テーブル2
+                    ON o_time.id = o_qtt.time_id
+                    INNER JOIN cake   -- テーブル3
+                    ON o_qtt.cake_id = cake.id;
+                    """;
+        List&lt;Map&lt;String, Object&gt;&gt; result = jdbcTemplate.queryForList(sql);
+        return result;
+    }
+
+    List&lt;Map&lt;String, Object&gt;&gt; select7() {
+        String sql = "SELECT * FROM cake";
+        List&lt;Map&lt;String, Object&gt;&gt; result = jdbcTemplate.queryForList(sql);
+        return result;
+    }
+
+<span class="diff-add">+   String orderT(String time_id){</span>
+<span class="diff-add">+       String sql_time = "INSERT INTO o_time(id) VALUES(?)";</span>
+<span class="diff-add">+       int count_time = jdbcTemplate.update(sql_time, time_id);</span>
+<span class="diff-add">+       return ("" + count_time);</span>
+<span class="diff-add">+   }</span>
+}</code></pre>
+                <p>なお、import文が現状からいくつか追加されているが、これらはSpring Bootの環境によっては自動で追加されるか、あるいは今後必要になる可能性があるため記述されていると解釈してよい。</p>
+
+                <h3>6, 新しいメソッドを作る（注文テーブルへの保存）</h3>
+                <p>次に、注文テーブル <code>o_qtt</code> にデータを登録する <code>orderQtt</code> メソッドを追加する。<br>
+                このテーブルには、「どの注文（time_id）で」「どのケーキ（cake_id）が」「何個（quantity）」注文されたかという3つの情報を記録する。したがって、メソッドの引数にはこれら3つを受け取るようにし、<code>INSERT INTO o_qtt(time_id, cake_id, quantity) VALUES(?, ?, ?)</code> というSQLを実行する。</p>
+                <p><i>CakeDao.java</i></p>
+                <pre class="code-block"><code>package com.example.demo;
+
+import java.util.List;
+import java.util.Map;
+import java.time.LocalTime;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class CakeDao {
+    private final JdbcTemplate jdbcTemplate;
+
+    CakeDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    String select2(int id) {
+        String sql = "SELECT price FROM cake WHERE id = ?";
+        String price = jdbcTemplate.queryForObject(sql, String.class, id);
+        return price;
+    }
+
+    public List&lt;Map&lt;String, Object&gt;&gt; select10b() {
+        String sql = """
+                SELECT
+                    o_time.id,
+                    o_time.time,
+                    cake.name,
+                    cake.price,
+                    o_qtt.quantity
+                FROM o_time       -- テーブル1
+                    INNER JOIN o_qtt  -- テーブル2
+                    ON o_time.id = o_qtt.time_id
+                    INNER JOIN cake   -- テーブル3
+                    ON o_qtt.cake_id = cake.id;
+                    """;
+        List&lt;Map&lt;String, Object&gt;&gt; result = jdbcTemplate.queryForList(sql);
+        return result;
+    }
+
+    List&lt;Map&lt;String, Object&gt;&gt; select7() {
+        String sql = "SELECT * FROM cake";
+        List&lt;Map&lt;String, Object&gt;&gt; result = jdbcTemplate.queryForList(sql);
+        return result;
+    }
+
+    String orderT(String time_id){
+        String sql_time = "INSERT INTO o_time(id) VALUES(?)";
+        int count_time = jdbcTemplate.update(sql_time, time_id);
+        return ("" + count_time);
+    }
+
+<span class="diff-add">+   String orderQtt(String time_id,  int cake_id, int quantity){</span>
+<span class="diff-add">+       String sql_qtt = "INSERT INTO o_qtt(time_id, cake_id, quantity) VALUES(?, ?, ?)";</span>
+<span class="diff-add">+       int count_qtt = jdbcTemplate.update(sql_qtt, time_id, cake_id, quantity);</span>
+<span class="diff-add">+       return ("" + count_qtt);</span>
+<span class="diff-add">+   }</span>
+}</code></pre>
+
+                <h3>7, コントローラーを完成させる</h3>
+                <p>DAOに必要な2つのメソッドが用意できたので、最後に <i>CakeShop.java</i> のコントローラーに戻り、これらを呼び出す処理を完成させる。<br>
+                処理の流れとしては以下のようになる。</p>
+                <ol class="indent">
+                    <li>課題文で指定された通り、2.4節で紹介された <code>UUID</code> を使ってランダムな文字列（ID）を生成する。このIDが、今回の1回の注文操作全体を識別するための <code>time_id</code> となる。</li>
+                    <li>生成した <code>time_id</code> を用いて、DAOの <code>orderT</code> メソッドを1回だけ呼び出し、注文時刻テーブルにIDを登録する。</li>
+                    <li>その後、先ほど作成した <code>for</code> ループの中で、注文数が0より大きいケーキを見つけるたびにDAOの <code>orderQtt</code> メソッドを呼び出す。このとき、どのケーキが何個注文されたかという情報とともに、同じ <code>time_id</code> を渡すことで、これらのケーキが「同じ1回の注文」で買われたものであることをデータベースに関連付ける。</li>
+                </ol>
+                <p><i>CakeShop.java</i></p>
+                <pre class="code-block"><code>package com.example.demo;
+
+import java.util.List;
+import java.util.Map;
+<span class="diff-add">+import java.util.UUID;</span>
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@SpringBootApplication
+@Controller
+public class CakeShop {
+    public static void main(String[] args) {
+        SpringApplication.run(CakeShop.class, args);
+    }
+
+    private final CakeDao dao;
+
+    CakeShop(CakeDao dao) {
+        this.dao = dao;
+    }
+
+    @RequestMapping("/")
+    String home(Model model) {
+        List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
+        // System.out.println(cakeList); &lt;--確認コード
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop3"; // ビューの名前
+    }
+
+    @RequestMapping("/order")
+    String order(@RequestParam("id") List&lt;Integer&gt; ids,@RequestParam("count") List&lt;Integer&gt; counts) {
+<span class="diff-add">+       String time_id = UUID.randomUUID().toString().substring(0, 8);  // 2.4節で紹介されたUUID</span>
+<span class="diff-add">+       dao.orderT(time_id);</span>
+        for(int i = 0; i&lt;counts.size(); i++){
+            if(counts.get(i) &gt; 0){
+<span class="diff-del">-               //DAO のorderメソッドを呼び出す。</span>
+<span class="diff-add">+               dao.orderQtt(time_id, ids.get(i), counts.get(i));</span>
+            }
+        }
+        return "redirect:/";
+    }
+}</code></pre>
+                <p>これで、フォームから注文を送信した際に、データベースの2つのテーブルに対して適切にデータが記録される機能が完成した。</p>
             </div>
         </section>
     </main>
