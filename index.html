@@ -686,6 +686,367 @@ public class CakeShop {
                 <p>これで、フォームから注文を送信した際に、データベースの2つのテーブルに対して適切にデータが記録される機能が完成した。</p>
             </div>
         </section>
+
+        <!-- ステップ3 -->
+        <section class="step-section card" id="step3">
+            <h2 class="step-title">ステップ３　注文id, 時刻, 商品名, 単価, 個数を売上データとして受け取る</h2>
+            <p class="step-goal">→ コントローラーからDAOメソッドを呼び出し、データを取得できるようにする</p>
+            <p class="step-scope">作業範囲： <i>/demo/CakeShop.java</i></p>
+
+            <div class="step-content">
+                <h3>1, 現状の確認</h3>
+                <p>前提として、ステップ４「売上データを表示する」の部分でHTML側から売上データを確認・利用するためには、コントローラーから <code>model.addAttribute()</code> を利用してデータを渡す必要がある。詳しくは過去の授業資料におけるMVCモデルの説明を参照してほしい。<br>
+                そのため、既に <code>model.addAttribute</code> を扱っている <code>home()</code> メソッドに、今回は処理を追加していく。</p>
+                <p><i>CakeShop.java</i></p>
+                <pre class="code-block"><code>package com.example.demo;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@SpringBootApplication
+@Controller
+public class CakeShop {
+    public static void main(String[] args) {
+        SpringApplication.run(CakeShop.class, args);
+    }
+
+    private final CakeDao dao;
+
+    CakeShop(CakeDao dao) {
+        this.dao = dao;
+    }
+
+    @RequestMapping("/")
+    String home(Model model) {
+        List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
+        // System.out.println(cakeList); &lt;--確認コード
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop3"; // ビューの名前
+    }
+
+    @RequestMapping("/order")
+    String order(@RequestParam("id") List&lt;Integer&gt; ids,@RequestParam("count") List&lt;Integer&gt; counts) {
+        String time_id = UUID.randomUUID().toString().substring(0, 8);
+        dao.orderT(time_id);
+        for(int i = 0; i&lt;counts.size(); i++){
+            if(counts.get(i) &gt; 0){
+                dao.orderQtt(time_id, ids.get(i), counts.get(i));
+            }
+        }
+        return "redirect:/";
+    }
+}</code></pre>
+
+                <h3>2, DAOメソッドの確認</h3>
+                <p>実は、授業資料内で既に売上データをデータベースから取得するSQL文は紹介されている。課題文にも「3つのテーブルを結合した結果を表示すればよい.」と書いてあるため、3.2節で提示されている"3つのテーブルの結合"から <code>select10b()</code> メソッドを利用する。<br>
+                なお、<i>CakeDao.java</i> を参照すると既に <code>select10b</code> を実装してあるはずである。</p>
+                <p><i>CakeDao.java</i></p>
+                <pre class="code-block"><code>package com.example.demo;
+
+import java.util.List;
+import java.util.Map;
+import java.time.LocalTime;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class CakeDao {
+    private final JdbcTemplate jdbcTemplate;
+
+    CakeDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    String select2(int id) {
+        String sql = "SELECT price FROM cake WHERE id = ?";
+        String price = jdbcTemplate.queryForObject(sql, String.class, id);
+        return price;
+    }
+
+    List&lt;Map&lt;String, Object&gt;&gt; select7() {
+        String sql = "SELECT * FROM cake";
+        List&lt;Map&lt;String, Object&gt;&gt; result = jdbcTemplate.queryForList(sql);
+        return result;
+    }
+
+    public List&lt;Map&lt;String, Object&gt;&gt; select10b() {
+        String sql = """
+                SELECT
+                    o_time.id,
+                    o_time.time,
+                    cake.name,
+                    cake.price,
+                    o_qtt.quantity
+                FROM o_time       -- テーブル1
+                    INNER JOIN o_qtt  -- テーブル2
+                    ON o_time.id = o_qtt.time_id
+                    INNER JOIN cake   -- テーブル3
+                    ON o_qtt.cake_id = cake.id;
+                    """;
+        List&lt;Map&lt;String, Object&gt;&gt; result = jdbcTemplate.queryForList(sql);
+        return result;
+    }
+
+
+    String orderT(String time_id){
+        String sql_time = "INSERT INTO o_time(id) VALUES(?)";
+        int count_time = jdbcTemplate.update(sql_time, time_id);
+        return ("" + count_time);
+    }
+
+    String orderQtt(String time_id,  int cake_id, int quantity){
+        String sql_qtt = "INSERT INTO o_qtt(time_id, cake_id, quantity) VALUES(?, ?, ?)";
+        int count_qtt = jdbcTemplate.update(sql_qtt, time_id, cake_id, quantity);
+        return ("" + count_qtt);
+    }
+
+}</code></pre>
+                <p>CakeShop.javaからこのメソッドを呼び出し、返り値を適切に処理するだけでよい。返り値の型は <code>List&lt;Map&lt;String, Object&gt;&gt;</code> である。</p>
+
+                <h3>3, コントローラーの調整</h3>
+                <p>現在のCakeShop.javaにおける <code>home()</code> メソッドは以下のようになっている。</p>
+                <pre class="code-block"><code>    @RequestMapping("/")
+    String home(Model model) {
+        List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
+        // System.out.println(cakeList); &lt;--確認コード
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop3"; // ビューの名前
+    }</code></pre>
+                <p>ここで、まずはデータベースから売上データを取得するための処理を追加する。</p>
+                <pre class="code-block"><code>    @RequestMapping("/")
+    String home(Model model) {
+        List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
+        // System.out.println(cakeList); &lt;--確認コード
+
+<span class="diff-add">+       List&lt;Map&lt;String, Object&gt;&gt; salesList = dao.select10b();</span>
+
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop3"; // ビューの名前
+    }</code></pre>
+                <p>これで、データベースから売上データを取得し、コントローラーで <code>salesList</code> として受け取る部分までできた。あとは、HTMLにこの売上データを手渡しするだけである。</p>
+                <pre class="code-block"><code>    @RequestMapping("/")
+    String home(Model model) {
+        List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
+        // System.out.println(cakeList); &lt;--確認コード
+
+        List&lt;Map&lt;String, Object&gt;&gt; salesList = dao.select10b();
+<span class="diff-add">+       model.addAttribute("salesList", salesList);</span>
+        model.addAttribute("cakeList", cakeList);
+        return "cakeshop3"; // ビューの名前
+    }</code></pre>
+                <p>これで、HTML側から "salesList" という名前で売上データを利用できるようになった。</p>
+            </div>
+        </section>
+
+        <!-- ステップ4 -->
+        <section class="step-section card" id="step4">
+            <h2 class="step-title">ステップ４　売上データを表示する</h2>
+            <div class="step-content">
+                <p>実はこのステップが一番簡単である。まず、完成例をブラウザ上でどのように表示されるか確認する。授業中に「グルーピングはとても難しいのでしなくていい。一行ずつ表示できれば正解です」と説明があったため、それを踏まえた目標とする。</p>
+                
+                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><table><thead><tr><th>注文ID</th><th>時刻</th><th>商品名</th><th>単価</th><th>個数</th></tr></thead><tbody><tr><td>ORDER001</td><td>12:34:00</td><td>モンブラン</td><td>460</td><td>1</td></tr><tr><td>ORDER001</td><td>12:34:00</td><td>アップルパイ</td><td>490</td><td>1</td></tr><tr><td>ORDER002</td><td>12:36:00</td><td>チーズケーキ</td><td>480</td><td>2</td></tr><tr><td>ORDER003</td><td>12:40:00</td><td>ガトーショコラ</td><td>550</td><td>2</td></tr><tr><td>ORDER003</td><td>12:40:00</td><td>アップルパイ</td><td>490</td><td>3</td></tr></tbody></table>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
+                
+                <p>これを目標に制作する。<br>
+                現状のHTMLコードを確認する。</p>
+                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;ケーキ通販&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;ケーキの注文&lt;/h1&gt;
+
+    &lt;div&gt;
+        &lt;h2&gt;ケーキの一覧を表示してみる&lt;/h2&gt;
+        &lt;form th:action="/order"&gt;
+            &lt;table border="1"&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;商品&lt;/th&gt;
+                        &lt;th&gt;価格&lt;/th&gt;
+                        &lt;th&gt;注文数&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr th:each="cake : ${cakeList}"&gt;
+                        &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;input type="submit" value="注文する"&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+                <p>新しく売上データ用の <code>&lt;table&gt;</code> を追加するが、現状のコードで利用されている <code>${cakeList}</code> を確認すると、CakeShop.javaでは <code>List&lt;Map&lt;String, Object&gt;&gt; cakeList</code> として宣言されており、今回渡した <code>salesList</code> とまったく同じ構造体だとわかる。そのため、今回は元々あるtableとほとんど同じ作りにするだけでよい。</p>
+                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;ケーキ通販&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;ケーキの注文&lt;/h1&gt;
+
+    &lt;div&gt;
+        &lt;h2&gt;ケーキの一覧を表示してみる&lt;/h2&gt;
+        &lt;form th:action="/order"&gt;
+            &lt;table border="1"&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;商品&lt;/th&gt;
+                        &lt;th&gt;価格&lt;/th&gt;
+                        &lt;th&gt;注文数&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr th:each="cake : ${cakeList}"&gt;
+                        &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
+                        &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;input type="submit" value="注文する"&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+<span class="diff-add">+   &lt;div&gt;</span>
+<span class="diff-add">+       &lt;table border="1"&gt;</span>
+<span class="diff-add">+           &lt;thead&gt;</span>
+<span class="diff-add">+               &lt;tr&gt;</span>
+<span class="diff-add">+                   &lt;th&gt;注文ID&lt;/th&gt;</span>
+<span class="diff-add">+                   &lt;th&gt;時刻&lt;/th&gt;</span>
+<span class="diff-add">+                   &lt;th&gt;商品名&lt;/th&gt;</span>
+<span class="diff-add">+                   &lt;th&gt;単価&lt;/th&gt;</span>
+<span class="diff-add">+                   &lt;th&gt;個数&lt;/th&gt;</span>
+<span class="diff-add">+               &lt;/tr&gt;</span>
+<span class="diff-add">+           &lt;/thead&gt;</span>
+<span class="diff-add">+           &lt;tbody&gt;</span>
+<span class="diff-add">+               &lt;tr th:each="data : ${salesList}"&gt;</span>
+<span class="diff-add">+                   &lt;td th:text="${data.id}"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+                   &lt;td th:text="${data.time}"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+                   &lt;td th:text="${data.name}"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+                   &lt;td th:text="${data.price}"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+                   &lt;td th:text="${data.quantity}"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+               &lt;/tr&gt;</span>
+<span class="diff-add">+           &lt;/tbody&gt;</span>
+<span class="diff-add">+       &lt;/table&gt;</span>
+<span class="diff-add">+   &lt;/div&gt;</span>
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+                <p>これで完成である。実際の環境で表示されることを確認して、「注文する」を押した時に売上データが増えることを確認しよう。</p>
+            </div>
+        </section>
+
+        <!-- ステップ5 -->
+        <section class="step-section card" id="step5">
+            <h2 class="step-title">ステップ５　ステップアップ（見た目の改善）</h2>
+            <div class="step-content">
+                <p>見た目が少し素っ気ないと思うので、簡単にオシャレなメニュー表に近づけられる技術を提示する（課題で直接要求されているわけではない）。<br>
+                HTMLの <code>&lt;head&gt;</code> 内にCSSファイルを読み込む記述を追加する。</p>
+                <pre class="code-block"><code>&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;ケーキ通販&lt;/title&gt;
+&lt;/head&gt;</code></pre>
+                <p>この部分を以下のように変更する。</p>
+                <pre class="code-block"><code>&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;ケーキ通販&lt;/title&gt;
+<span class="diff-add">+   &lt;link rel="stylesheet" th:href="@{/cakeshop.css}" /&gt;</span>
+&lt;/head&gt;</code></pre>
+                <p>そして、<code>./src/resources/static/</code>（あるいは画像などの静的ファイルを置くフォルダ）に <code>cakeshop.css</code> というファイルを作成し、下記のコードをそのままコピーペーストする。</p>
+                <pre class="code-block"><code>table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+
+    th {
+        background-color: #e0f0ff;
+        font-weight: bold;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #f2f6f8;
+    }
+
+    th,
+    td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 12px 15px;
+        border: 1px solid #b3b3b3;
+
+        ul.line-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        ul.line-list:not(:last-child)::after {
+            content: '';
+            display: block;
+            height: 1px;
+            background-color: #ddd;
+            margin: 0 -15px;
+        }
+
+        ul.line-list li {
+            padding: 10px 0;
+        }
+    }
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input[type="number"]:focus {
+    border-color: #aaa;
+}
+
+/* ブラウザ既定の上下矢印を非表示 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}</code></pre>
+                <p>これで、デザインが適用され少し本格的な見た目になる。</p>
+            </div>
+        </section>
     </main>
     <script src="script.js"></script>
 </body>
