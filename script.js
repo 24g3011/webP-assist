@@ -1,46 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 課題文の各行要素
-    const taskParts = {
-        step1: ['task-part-1'],
-        step2: ['task-part-1', 'task-part-2a', 'task-part-2b', 'task-part-2c', 'task-part-2d', 'task-part-2e']
-    };
+    // --- ページ内リンクで飛んだ元の場所に戻る機能 ---
+    const backButton = document.getElementById('back-button');
+    let previousScrollPosition = 0;
+    let isJumped = false;
 
-    const allTaskLines = document.querySelectorAll('.task-line');
-
-    // Intersection Observerの設定
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.3 // セクションが30%見えたらアクティブにする
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const activeStepId = entry.target.id;
-                updateTaskHighlight(activeStepId);
+    // ページ内リンクのクリックイベント
+    document.querySelectorAll('a.in-page-link').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            // 現在のスクロール位置を保存
+            previousScrollPosition = window.scrollY;
+            isJumped = true;
+            
+            // 戻るボタンを表示する
+            if (backButton) {
+                backButton.classList.add('show');
             }
         });
-    }, observerOptions);
-
-    // 監視対象の設定
-    document.querySelectorAll('.step-section').forEach(section => {
-        observer.observe(section);
     });
 
-    // 課題文のハイライトを更新する関数
-    function updateTaskHighlight(stepId) {
-        const activeParts = taskParts[stepId] || [];
-
-        allTaskLines.forEach(line => {
-            if (activeParts.includes(line.id)) {
-                line.classList.remove('grayed-out');
-            } else {
-                line.classList.add('grayed-out');
+    // 戻るボタンのクリックイベント
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            if (isJumped) {
+                window.scrollTo({
+                    top: previousScrollPosition,
+                    behavior: 'smooth'
+                });
+                backButton.classList.remove('show');
+                isJumped = false;
+                
+                // URLのハッシュを消去
+                history.replaceState(null, null, window.location.pathname + window.location.search);
             }
         });
     }
-
-    // デフォルトでステップ1をアクティブにする
-    updateTaskHighlight('step1');
 });
