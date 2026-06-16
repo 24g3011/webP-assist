@@ -121,9 +121,9 @@
                 &lt;tbody&gt;
                     &lt;tr th:each="cake : ${cakeList}"&gt;
 <span class="diff-del">-                       &lt;td th:text="${cake.id}"&gt;&lt;/td&gt;</span>
-<span class="diff-add">+                       &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;</span>
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
+<span class="diff-add">+						&lt;td&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -132,8 +132,6 @@
 &lt;/html&gt;</code></pre>
                 
                 <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="3"></td><td>チーズケーキ</td><td>480</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="4"></td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
-                
-                <p>なお、<i>name="id"</i>にあたる<i>&lt;td&gt;</i>に書いた"display: none;"はブラウザの画面上に表示しないためのものである。</p>
 
                 <h3>3, テキスト入力欄</h3>
                 <p>続いて、注文数を入力するテキスト欄を追加する。方針としては、「1, HTMLのtableに、テキスト入力欄を置くための新しい列を追加する」「追加した列の要素としてテキスト入力欄を追加する」の2ステップに分ける。</p>
@@ -161,7 +159,6 @@
                         &lt;td style="display: none;"&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
-<span class="diff-add">+                       &lt;td&gt;&lt;/td&gt;</span>
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -196,7 +193,10 @@
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
 <span class="diff-del">-                       &lt;td&gt;&lt;/td&gt;</span>
-<span class="diff-add">+                       &lt;td&gt;&lt;input type="text" name="count"&gt;&lt;/td&gt;</span>
+<span class="diff-add">+                       &lt;td&gt;
+		&lt;input type="text" name="count"&gt;
+		&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+	&lt;/td&gt;</span>
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
