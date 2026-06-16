@@ -343,7 +343,7 @@ public class CakeShop {
                 <p>現状の<i>CakeShop.java</i>には<i>cakeshop.html</i>の<i>&lt;form&gt;</i>内の<i>action="/order"</i>に対応するマッピングが存在しない。そこで、まずは<i>cakeshop.html</i>でsubmitボタンが押され、http://localhost:8080/orderが要求された時のRequestMappingを追加する。</p>
 
                 <details>
-                    <summary>詳細を開く</summary>
+                    <summary>RequestMappingについての細かい説明を開く</summary>
                     <div class="details-content">
                         <p><i>Kuchou.java</i>や<i>DemoApplication3.java</i>にあるRequestMappingを参考にすると、中身の処理を除いて大きく２種類のRequestMappingが存在することがわかる。１つ目は、</p>
                         <pre class="code-block"><code>@RequesMapping("/Kuchou")
@@ -412,7 +412,7 @@ public class CakeShop {
 }</code></pre>
 
                 <details>
-                    <summary>詳細を開く</summary>
+                    <summary>RequestParamの型についての細かい説明を開く</summary>
                     <div class="details-content">
                         <p><i>cakeshop.html</i>の<i>&lt;form&gt;</i>では、現在「モンブラン、アップルパイ、チーズケーキ、ガトーショコラ」の４つの行が表示され、それぞれ注文数が<i>name="count"</i>で設定されている。ここで、submitのボタンを押すと<i>action="/order"</i>としてコントローラーに"count"の値達が渡ることになるが、コントローラー側から見た時、渡されたデータは<i>Map&lt;String, List&lt;Object&gt;&gt;</i>のような型で{"count", [モンブランのcount, アップルパイのcount, チーズケーキのcount, ガトーショコラのcount]}のようになっている。そのため、<i>@RequestParam("count")</i>でcountの値を受け取ろうとすると、[モンブランのcount,...]が渡されるため、Listとして受け取ることで対処する。</p>
                     </div>
