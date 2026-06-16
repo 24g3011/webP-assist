@@ -1,71 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ケーキ通販アプリ作成チュートリアル</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webプログラミング演習第8回課題</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <header>
-        <div class="header-container">
-            <h1>Webアプリ作成 チュートリアル</h1>
-            <p>2.1節：ケーキ通販Webアプリの作成</p>
-        </div>
+      <div class="header-container">
+        <h1>Webアプリ作成 チュートリアル</h1>
+        <p>2.1節：ケーキ通販Webアプリの作成</p>
+      </div>
     </header>
 
     <main class="container">
-        <!-- 課題文表示エリア -->
-        <section class="assignment-section card">
-            <h2>📝 課題文</h2>
-            <div id="assignment-text" class="assignment-text">
-                <p id="task-part-1" class="task-line">フォームにケーキの注文数を入力して送信を押すと，注文内容を2つのテーブルに記録する．</p>
-                <div class="indent">
-                    <p id="task-part-2a" class="task-line"><strong>注文時刻テーブル o_time</strong></p>
-                    <ul class="indent">
-                        <li id="task-part-2b" class="task-line">id：フォームのactionで指定したエンドポイントのメソッド内でUUIDを生成し，それをidにする．#4 の2.4節の手法を使うとよい．</li>
-                        <li id="task-part-2c" class="task-line">time：デフォルト制約を付けているのでJavaで現在時刻を取得する必要はない →2.4節</li>
-                    </ul>
-                    <p id="task-part-2d" class="task-line"><strong>注文テーブル o_qtt</strong></p>
-                    <ul class="indent">
-                        <li id="task-part-2e" class="task-line">生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．</li>
-                    </ul>
-                </div>
-                <p id="task-part-3" class="task-line">注文を受けるたびに2つのテーブルをSELECT *で表示しておくと何かと捗る．</p>
-                <p id="task-part-4" class="task-line">注文id，時刻，商品名，単価，個数を売上データとして表示する．</p>
-                <ul class="indent">
-                    <li id="task-part-4a" class="task-line">客が見る情報と店員が見る情報は別のページに分けるのが普通だが，単一のページで表示してもよいことにする．</li>
-                    <li id="task-part-4b" class="task-line">3つのテーブルを結合した結果を表示すればよい．</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- 目次エリア -->
-        <section class="toc-section card" id="toc">
-            <h2>📑 目次</h2>
-            <ul>
-                <li><a href="#assignment-text">課題文</a></li>
-                <li><a href="#step1">ステップ１：フォームにケーキの注文数を入力して送信ボタンを押せるようにする。</a></li>
-                <li><a href="#step2">ステップ２：注文内容を２つのテーブルに記録する</a></li>
-                <li><a href="#step3">ステップ３：注文id, 時刻, 商品名, 単価, 個数を売上データとして受け取る</a></li>
-                <li><a href="#step4">ステップ４：売上データを表示する</a></li>
-                <li><a href="#step5">ステップ５：ステップアップ（見た目の改善）</a></li>
+      <!-- 課題文表示エリア -->
+      <section class="assignment-section card">
+        <h2>📝 課題文</h2>
+        <div id="assignment-text" class="assignment-text">
+          <p id="task-part-1" class="task-line">
+            フォームにケーキの注文数を入力して送信を押すと，注文内容を2つのテーブルに記録する．
+          </p>
+          <div class="indent">
+            <p id="task-part-2a" class="task-line">
+              <strong>注文時刻テーブル o_time</strong>
+            </p>
+            <ul class="indent">
+              <li id="task-part-2b" class="task-line">
+                id：フォームのactionで指定したエンドポイントのメソッド内でUUIDを生成し，それをidにする．#4
+                の2.4節の手法を使うとよい．
+              </li>
+              <li id="task-part-2c" class="task-line">
+                time：デフォルト制約を付けているのでJavaで現在時刻を取得する必要はない
+                →2.4節
+              </li>
             </ul>
-        </section>
+            <p id="task-part-2d" class="task-line">
+              <strong>注文テーブル o_qtt</strong>
+            </p>
+            <ul class="indent">
+              <li id="task-part-2e" class="task-line">
+                生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．
+              </li>
+            </ul>
+          </div>
+          <p id="task-part-3" class="task-line">
+            注文を受けるたびに2つのテーブルをSELECT
+            *で表示しておくと何かと捗る．
+          </p>
+          <p id="task-part-4" class="task-line">
+            注文id，時刻，商品名，単価，個数を売上データとして表示する．
+          </p>
+          <ul class="indent">
+            <li id="task-part-4a" class="task-line">
+              客が見る情報と店員が見る情報は別のページに分けるのが普通だが，単一のページで表示してもよいことにする．
+            </li>
+            <li id="task-part-4b" class="task-line">
+              3つのテーブルを結合した結果を表示すればよい．
+            </li>
+          </ul>
+        </div>
+      </section>
 
-        <!-- ステップ1 -->
-        <section class="step-section card" id="step1">
-            <h2 class="step-title">ステップ１：フォームにケーキの注文数を入力して送信ボタンを押せるようにする。</h2>
-            <p class="step-goal">→ケーキの注文数を入力できるフォームと、送信ボタンを作成する。</p>
-            <p class="step-scope">作業範囲：<i>template/cakeshop.html</i></p>
+      <!-- 目次エリア -->
+      <section class="toc-section card" id="toc">
+        <h2>📑 目次</h2>
+        <ul>
+          <li><a href="#assignment-text">課題文</a></li>
+          <li>
+            <a href="#step1"
+              >ステップ１：フォームにケーキの注文数を入力して送信ボタンを押せるようにする。</a
+            >
+          </li>
+          <li>
+            <a href="#step2">ステップ２：注文内容を２つのテーブルに記録する</a>
+          </li>
+          <li>
+            <a href="#step3"
+              >ステップ３：注文id, 時刻, 商品名, 単価,
+              個数を売上データとして受け取る</a
+            >
+          </li>
+          <li><a href="#step4">ステップ４：売上データを表示する</a></li>
+          <li>
+            <a href="#step5">ステップ５：ステップアップ（見た目の改善）</a>
+          </li>
+        </ul>
+      </section>
 
-            <div class="step-content">
-                <h3>1, 現状の把握</h3>
-                
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+      <!-- ステップ1 -->
+      <section class="step-section card" id="step1">
+        <h2 class="step-title">
+          ステップ１：フォームにケーキの注文数を入力して送信ボタンを押せるようにする。
+        </h2>
+        <p class="step-goal">
+          →ケーキの注文数を入力できるフォームと、送信ボタンを作成する。
+        </p>
+        <p class="step-scope">作業範囲：<i>template/cakeshop.html</i></p>
+
+        <div class="step-content">
+          <h3>1, 現状の把握</h3>
+
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
     &lt;head&gt;
         &lt;meta charset="UTF-8"&gt;
@@ -92,17 +135,46 @@
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>ID</th><th>NAME</th><th>PRICE</th></tr></thead><tbody><tr><td>1</td><td>モンブラン</td><td>460</td></tr><tr><td>2</td><td>アップルパイ</td><td>490</td></tr><tr><td>3</td><td>チーズケーキ</td><td>480</td></tr><tr><td>4</td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
+          <p><strong>HTMLのサンプルページ1</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>ID</th><th>NAME</th><th>PRICE</th></tr></thead><tbody><tr><td>1</td><td>モンブラン</td><td>460</td></tr><tr><td>2</td><td>アップルパイ</td><td>490</td></tr><tr><td>3</td><td>チーズケーキ</td><td>480</td></tr><tr><td>4</td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
 
-                <h3 id="step1-goal">目標</h3>
-                
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" size="2" value="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" size="2" value="0"></td></tr><tr><td>チーズケーキ</td><td>480</td><td><input type="number" size="2" value="0"></td></tr><tr><td>ガトーショコラ</td><td>550</td><td><input type="number" size="2" value="0"></td></tr></tbody></table><br><input type="submit" value="送信する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
+          <h3 id="step1-goal">目標</h3>
 
-                <h3>2, 比較</h3>
-                <p>現状のHTMLページと目標のページを見比べると、現状のNAME, PRICEの列はそのまま名前だけ変えて利用できそうだとわかる。またIDの列は一見必要無いように見えるが、<a href="#task-part-2e" class="in-page-link">課題の「生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．」</a>において"フォームから受け取ったケーキID"というように、フォームからケーキIDを送信したいため、少し調整する必要がある。例えば、<i>haik.html</i>や<i>task.html</i>の<i>&lt;form&gt;</i>において、<code>&lt;input type="hidden" name="id" th:value="${task.id}"&gt;</code>のような記述がある。これは「HTML上には表示されないが、一緒にデータを送信できる」部分なため、これをほぼそのまま利用するとよい。</p>
-                <p>まずはこの２つの作業を進める。</p>
-                
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+          <p><strong>HTMLのサンプルページ2</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" size="2" value="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" size="2" value="0"></td></tr><tr><td>チーズケーキ</td><td>480</td><td><input type="number" size="2" value="0"></td></tr><tr><td>ガトーショコラ</td><td>550</td><td><input type="number" size="2" value="0"></td></tr></tbody></table><br><input type="submit" value="送信する"></form>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
+
+          <h3>2, 比較</h3>
+          <p>
+            現状のHTMLページと目標のページを見比べると、現状のNAME,
+            PRICEの列はそのまま名前だけ変えて利用できそうだとわかる。またIDの列は一見必要無いように見えるが、<a
+              href="#task-part-2e"
+              class="in-page-link"
+              >課題の「生成したUUIDおよび，フォームから受け取ったケーキID・個数を登録する．」</a
+            >において"フォームから受け取ったケーキID"というように、フォームからケーキIDを送信したいため、少し調整する必要がある。例えば、<i>haik.html</i>や<i>task.html</i>の<i>&lt;form&gt;</i>において、<code
+              >&lt;input type="hidden" name="id" th:value="${task.id}"&gt;</code
+            >のような記述がある。これは「HTML上には表示されないが、一緒にデータを送信できる」部分なため、これをほぼそのまま利用するとよい。順番が前後してしまうが、「注文数」の列を追加するためのスペースに、IDを隠すことにする。
+          </p>
+          <p>まずはこの作業を進める。</p>
+
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
     &lt;head&gt;
         &lt;meta charset="UTF-8"&gt;
@@ -123,22 +195,37 @@
 <span class="diff-del">-                       &lt;td th:text="${cake.id}"&gt;&lt;/td&gt;</span>
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
-<span class="diff-add">+			&lt;td&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt/td&gt;</span>
+<span class="diff-add">+                       &lt;td&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;</span>
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
         &lt;/div&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="3"></td><td>チーズケーキ</td><td>480</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="4"></td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
-                <h3>3, テキスト入力欄</h3>
-                <p>続いて、注文数を入力するテキスト欄を追加する。方針としては、「1, HTMLのtableに、テキスト入力欄を置くための新しい列を追加する」「追加した列の要素としてテキスト入力欄を追加する」の2ステップに分ける。</p>
+          <p><strong>HTMLのサンプルページ3</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="3"></td><td>チーズケーキ</td><td>480</td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="4"></td><td>ガトーショコラ</td><td>550</td></tr></tbody></table></div>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
 
-                <h4>3.1, 列の追加</h4>
-                <p>HTMLのtableに列を追加するのは、単に<i>&lt;thead&gt;</i>内の<i>&lt;th&gt;</i>と、<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を増やすだけでいい。逆に、先程は<i>&lt;thead&gt;</i>内のIDという<i>&lt;th&gt;</i>と<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を削除または見えなくしたため、tableからIDという列が無くなった。</p>
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+          <h3>3, テキスト入力欄</h3>
+          <p>
+            続いて、注文数を入力するテキスト欄を追加する。方針としては、「1,
+            HTMLのtableに、テキスト入力欄を置くための新しい列を追加する」「追加した列の要素としてテキスト入力欄を追加する」の2ステップに分ける。
+          </p>
+
+          <h4>3.1, 列の追加</h4>
+          <p>
+            HTMLのtableに列を追加するのは、単に<i>&lt;thead&gt;</i>内の<i>&lt;th&gt;</i>と、<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を増やすだけでいい。逆に、先程は<i>&lt;thead&gt;</i>内のIDという<i>&lt;th&gt;</i>と<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>を削除または見えなくしたため、tableからIDという列が無くなった。
+          </p>
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
     &lt;head&gt;
         &lt;meta charset="UTF-8"&gt;
@@ -158,21 +245,37 @@
                     &lt;tr th:each="cake : ${cakeList}"&gt;
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
-		      &lt;td&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt/td&gt;
+                        &lt;td&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt;/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
         &lt;/div&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td></td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
-                <h4 id="step1-3-2">3.2, テキスト入力欄の追加</h4>
-                <p>新しく追加された「注文数」という列に、テキスト入力欄を追加する。テキスト入力欄は、<i>DemoApplication3.java</i>のタスク管理アプリケーションに使われる<i>task.html</i>ビューや、<i>Kuchou.java</i>の俳句アプリケーションに使われる<i>haiku.html</i>ビューで何度か利用してきた。<br>
-                <i>&lt;input&gt;</i>フィールドのtype属性値にtextを指定して<i>&lt;input type="text"&gt;</i>とすればよい。また、コントローラーから注文数を受け取れるようにname属性を追加しておく。最終的に、<i>&lt;input type="text" name="count"&gt;</i>などとすればよい。<br>
-                HTMLのtableにおいて、列の要素は<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>要素に記述される。</p>
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+          <p><strong>HTMLのサンプルページ4</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td></td></tr></tbody></table></div>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
+
+          <h4 id="step1-3-2">3.2, テキスト入力欄の追加</h4>
+          <p>
+            新しく追加された「注文数」という列に、テキスト入力欄を追加する。テキスト入力欄は、<i>DemoApplication3.java</i>のタスク管理アプリケーションに使われる<i>task.html</i>ビューや、<i>Kuchou.java</i>の俳句アプリケーションに使われる<i>haiku.html</i>ビューで何度か利用してきた。<br />
+            <i>&lt;input&gt;</i>フィールドのtype属性値にtextを指定して<i
+              >&lt;input type="text"&gt;</i
+            >とすればよい。また、コントローラーから注文数を受け取れるようにname属性を追加しておく。最終的に、<i
+              >&lt;input type="text" name="count"&gt;</i
+            >などとすればよい。<br />
+            HTMLのtableにおいて、列の要素は<i>&lt;tbody&gt;</i>内の<i>&lt;td&gt;</i>要素に記述される。
+          </p>
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
     &lt;head&gt;
         &lt;meta charset="UTF-8"&gt;
@@ -192,21 +295,33 @@
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
 <span class="diff-mod">+                       &lt;td&gt;
-				&lt;input type="text" name="count"&gt;
-				&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
-			&lt;/td&gt;</span>
+                            &lt;input type="text" name="count"&gt;
+                            &lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+                        &lt;/td&gt;</span>
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
         &lt;/div&gt;
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td><input type="text" name="count"></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td><input type="text" name="count"></td></tr></tbody></table></div>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
-                <h3>4, フォーム化と送信ボタンの用意</h3>
-                <p>ここまで来たら表示部分は送信ボタンを用意するだけ。しかし、HTMLのコード上で送信ボタンを押した時に送りたいデータを<i>&lt;form&gt;</i>で囲わないといけない。ただこれも実は簡単で、送りたいデータとして「注文数」を含んだテーブルをここまでで作成してきたので、あとは<i>&lt;table&gt;</i>を<i>&lt;form&gt;</i>で囲い、最後に送信ボタンを追加するだけである。なお、送信ボタンはテキスト入力欄同様に、これまでのコントローラーの資料に載っているものと同じものを利用する。</p>
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+          <p><strong>HTMLのサンプルページ5</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><h1>ケーキの注文</h1><div><h2>ケーキの一覧を表示してみる</h2><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td style="display: none;"><input type="hidden" name="id" value="1"></td><td>モンブラン</td><td>460</td><td><input type="text" name="count"></td></tr><tr><td style="display: none;"><input type="hidden" name="id" value="2"></td><td>アップルパイ</td><td>490</td><td><input type="text" name="count"></td></tr></tbody></table></div>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
+
+          <h3>4, フォーム化と送信ボタンの用意</h3>
+          <p>
+            ここまで来たら表示部分は送信ボタンを用意するだけ。しかし、HTMLのコード上で送信ボタンを押した時に送りたいデータを<i>&lt;form&gt;</i>で囲わないといけない。ただこれも実は簡単で、送りたいデータとして「注文数」を含んだテーブルをここまでで作成してきたので、あとは<i>&lt;table&gt;</i>を<i>&lt;form&gt;</i>で囲い、最後に送信ボタンを追加するだけである。なお、送信ボタンはテキスト入力欄同様に、これまでのコントローラーの資料に載っているものと同じものを利用する。
+          </p>
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
 
 &lt;head&gt;
@@ -233,10 +348,10 @@
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
                         &lt;td&gt;&lt;input type="text" name="count"&gt;&lt;/td&gt;
-		      &lt;td&gt;
-			&lt;input type="text" name="count"&gt;
-			&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
-			&lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;input type="text" name="count"&gt;
+                            &lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+                        &lt;/td&gt;
                   &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -246,14 +361,44 @@
 &lt;/body&gt;
 
 &lt;/html&gt;</code></pre>
-                
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="text" name="count"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="text" name="count"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
-                <p>自分の環境できちんと動作し、送信ボタンを押した時にURLに<i>/order?count=0&count=0...</i>などと表示されることを確認したら、<a href="#step1" class="in-page-link">ステップ１</a>の完了である。</p>
+          <p><strong>HTMLのサンプルページ6</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="text" name="count"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="text" name="count"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
 
-                <h3>5, ステップアップ</h3>
-                <p>ここでは、実際に課題で要求されているわけではないが、非常に簡単に、より本格的なメニュー表に近づけられる技術を記載する。<a href="#step1-3-2" class="in-page-link">前の項</a>で<i>cakeshop.html</i>に<code>&lt;input type="text" name="count" value="0"&gt;</code>を追加した。<i>&lt;input type="text"&gt;</i>は「text (=/文字列)を入力できるフィールドを用意する」というような意味の処理である。ここで、<a href="#step1-goal" class="in-page-link">目標としている*ステップ1の1-2.htmlページ部分</a> では、入力される値は「注文数」のことを指すため数字しか受け取る必要が無い。むしろ、注文数の部分に「いち」や漢数字の「一」を入力されると、コントローラー側での処理が非常に難しくなってしまう。そこで、そもそも<i>&lt;input&gt;</i>のtypeにtextではなく、数値を指定して数字だけを入力できるようにした方がよい。</p>
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+          <p>
+            自分の環境できちんと動作し、送信ボタンを押した時にURLに<i>/order?count=0&count=0...</i>などと表示されることを確認したら、<a
+              href="#step1"
+              class="in-page-link"
+              >ステップ１</a
+            >の完了である。
+          </p>
+
+          <h3>5, ステップアップ</h3>
+          <p>
+            ここでは、実際に課題で要求されているわけではないが、非常に簡単に、より本格的なメニュー表に近づけられる技術を記載する。<a
+              href="#step1-3-2"
+              class="in-page-link"
+              >前の項</a
+            >で<i>cakeshop.html</i>に<code
+              >&lt;input type="text" name="count" value="0"&gt;</code
+            >を追加した。<i>&lt;input type="text"&gt;</i>は「text
+            (=/文字列)を入力できるフィールドを用意する」というような意味の処理である。ここで、<a
+              href="#step1-goal"
+              class="in-page-link"
+              >目標としている*ステップ1の1-2.htmlページ部分</a
+            >
+            では、入力される値は「注文数」のことを指すため数字しか受け取る必要が無い。むしろ、注文数の部分に「いち」や漢数字の「一」を入力されると、コントローラー側での処理が非常に難しくなってしまう。そこで、そもそも<i>&lt;input&gt;</i>のtypeにtextではなく、数値を指定して数字だけを入力できるようにした方がよい。
+          </p>
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
 &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
@@ -278,10 +423,10 @@
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
 <span class="diff-del">-                       &lt;td&gt;&lt;input type="text" name="count" value="0"&gt;&lt;/td&gt;</span>
 <span class="diff-mod">+                       &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;</span>
-		     &lt;td&gt;
-			  &lt;input type="text" name="count"&gt;
-			  &lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
-		    &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;input type="text" name="count"&gt;
+                            &lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+                        &lt;/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -290,23 +435,41 @@
     &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-                
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" name="count" value="0" min="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" name="count" value="0" min="0"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
 
-                <p>ここで、<i>&lt;input&gt;</i>の属性としてさらに<i>min="0"</i>と<i>value="0"</i>を追加している。"min"はその名の通り、最小値として0を設定するということ。この<i>&lt;input&gt;</i>フィールドにおいて、入力される数値が0を下回らないようにしている。"value"はデフォルト値を設定している。</p>
-            </div>
-        </section>
+          <p><strong>HTMLのサンプルページ7</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><form><table border="1"><thead><tr><th>商品</th><th>価格</th><th>注文数</th></tr></thead><tbody><tr><td>モンブラン</td><td>460</td><td><input type="number" name="count" value="0" min="0"></td></tr><tr><td>アップルパイ</td><td>490</td><td><input type="number" name="count" value="0" min="0"></td></tr></tbody></table><br><input type="submit" value="注文する"></form>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
 
-        <!-- ステップ2 -->
-        <section class="step-section card" id="step2">
-            <h2 class="step-title">ステップ２　注文内容を２つのテーブルに記録する</h2>
-            <p class="step-goal">→DAOに2つのINSERT文を実行するorderメソッドを作成し、コントローラーから呼び出す。</p>
-            <p class="step-scope">作業範囲： <i>/demo/CakeShop.java</i>   &  <i>/demo/CakeDao.java</i></p>
-            <p>作業範囲は多いが、順番に作業していけばそこまで難しいことはない。</p>
+          <p>
+            ここで、<i>&lt;input&gt;</i>の属性としてさらに<i>min="0"</i>と<i>value="0"</i>を追加している。"min"はその名の通り、最小値として0を設定するということ。この<i>&lt;input&gt;</i>フィールドにおいて、入力される数値が0を下回らないようにしている。"value"はデフォルト値を設定している。
+          </p>
+        </div>
+      </section>
 
-            <div class="step-content">
-                <h3>1, 現状の確認</h3>
-                <pre class="code-block"><code>package com.example.demo;
+      <!-- ステップ2 -->
+      <section class="step-section card" id="step2">
+        <h2 class="step-title">
+          ステップ２　注文内容を２つのテーブルに記録する
+        </h2>
+        <p class="step-goal">
+          →DAOに2つのINSERT文を実行するorderメソッドを作成し、コントローラーから呼び出す。
+        </p>
+        <p class="step-scope">
+          作業範囲： <i>/demo/CakeShop.java</i> & <i>/demo/CakeDao.java</i>
+        </p>
+        <p>作業範囲は多いが、順番に作業していけばそこまで難しいことはない。</p>
+
+        <div class="step-content">
+          <h3>1, 現状の確認</h3>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.util.List;
 import java.util.Map;
@@ -339,39 +502,60 @@ public class CakeShop {
     }
 }</code></pre>
 
-                <h3 id="step2-2">2, HTMLからの受け取り(コントローラーの処理-前段階)</h3>
-                <p>現状の<i>CakeShop.java</i>には<i>cakeshop.html</i>の<i>&lt;form&gt;</i>内の<i>action="/order"</i>に対応するマッピングが存在しない。そこで、まずは<i>cakeshop.html</i>でsubmitボタンが押され、http://localhost:8080/orderが要求された時のRequestMappingを追加する。</p>
+          <h3 id="step2-2">
+            2, HTMLからの受け取り(コントローラーの処理-前段階)
+          </h3>
+          <p>
+            現状の<i>CakeShop.java</i>には<i>cakeshop.html</i>の<i>&lt;form&gt;</i>内の<i>action="/order"</i>に対応するマッピングが存在しない。そこで、まずは<i>cakeshop.html</i>でsubmitボタンが押され、http://localhost:8080/orderが要求された時のRequestMappingを追加する。
+          </p>
 
-                <details>
-                    <summary>RequestMappingについての細かい説明を開く</summary>
-                    <div class="details-content">
-                        <p><i>Kuchou.java</i>や<i>DemoApplication3.java</i>にあるRequestMappingを参考にすると、中身の処理を除いて大きく２種類のRequestMappingが存在することがわかる。１つ目は、</p>
-                        <pre class="code-block"><code>@RequesMapping("/Kuchou")
+          <details>
+            <summary>RequestMappingについての細かい説明を開く</summary>
+            <div class="details-content">
+              <p>この説明は課題を解く本題とずれる説明を含むため、興味がある人だけが読めばよい。<br>
+                <i>Kuchou.java</i
+                >や<i>DemoApplication3.java</i>にあるRequestMappingを参考にすると、中身の処理を除いて大きく２種類のRequestMappingが存在することがわかる。１つ目は、
+              </p>
+              <pre class="code-block"><code>@RequesMapping("/Kuchou")
 String haiku(<span class="highlight">Model model</span>){
-	--省略--
-	<span class="highlight">return "haikulist.html";</span>
+    --省略--
+    <span class="highlight">return "haikulist.html";</span>
 }</code></pre>
-                        <p>というような、メソッドの引数に<i>Model model</i>を持ち、returnで"**(htmlファイルの名前)"を指定するものである。２つ目は、</p>
-                        <pre class="code-block"><code>@RequestMapping("/addHaiku")
+              <p>
+                というような、メソッドの引数に<i>Model model</i
+                >を持ち、returnで"**(htmlファイルの名前)"を指定するものである。２つ目は、
+              </p>
+              <pre class="code-block"><code>@RequestMapping("/addHaiku")
 String addHaiku(<span class="highlight">@RequestParam("haiku")</span> Haiku haiku){
-	--省略--
-	<span class="highlight">return "redirect:/Kuchou";</span>
+    --省略--
+    <span class="highlight">return "redirect:/Kuchou";</span>
 }</code></pre>
-                        <p>というような、メソッドの引数に<i>@RequestParam</i>を持ち、returnで"redirect:/***(アノテーションの名前)"を指定するものである。詳しい説明や違いが気になる場合は調べたり過去の資料を見るとよい。今回この２つのRequestMappingの違いとして大切なのは、「1つ目のRequestMappingは今のところ、1つのコントローラーにつき1つしか書かない」ということである。<br>
-                        この流れに従うと、現在の<i>CakeShop.java</i>には既に</p>
-                        <pre class="code-block"><code>@RequestMapping("/")
+              <p>
+                というような、メソッドの引数に<i>@RequestParam</i>を持ち、returnで"redirect:/***(アノテーションの名前)"を指定するものである。詳しい説明や違いが気になる場合は調べたり過去の資料を見るとよい。今回この２つのRequestMappingの違いとして大切なのは、「1つ目のRequestMappingは今のところ、1つのコントローラーにつき1つしか書かない」ということである。<br />
+                この流れに従うと、現在の<i>CakeShop.java</i>には既に
+              </p>
+              <pre class="code-block"><code>@RequestMapping("/")
     String home(<span class="highlight">Model model</span>) {
         List&lt;Map&lt;String,Object&gt;&gt; cakeList = dao.select7();
         //System.out.println(cakeList); &lt;--確認コード
         model.addAttribute("cakeList", cakeList);
         <span class="highlight">return "cakeshop";</span> // ビューの名前
     }</code></pre>
-                        <p>というコードがあり、これは引数に<i>Model model</i>を持ち、returnで"cakeshop(.html)"を指定しているため、１つ目のRequestMappingがもう使われている。そこで、ここからは２つ目のRequestMappingの書き方を利用していく。</p>
-                    </div>
-                </details>
+              <p>
+                というコードがあり、これは引数に<i>Model model</i
+                >を持ち、returnで"cakeshop(.html)"を指定しているため、１つ目のRequestMappingがもう使われている。そこで、ここから先では２つ目のRequestMappingの書き方を利用していく。<br>
+                ここで説明した内容に反して、仕組み的にはRequestMappingはいくつ書いても同じであるが、これまで授業で取り扱った例ではこれらのように２種類の型のようなものがあったため、区別するためにこの場を設けた。
+              </p>
+            </div>
+          </details>
 
-                <p><i>action="order"</i>に対応するため、アノテーションは"/order"にする。また、returnには"redirect:/"を指定するため、型宣言はStringである。<i>@RequestParam</i>の扱いが難しいので、ここでは<i>List&lt;Integer&gt; ids</i>と<i>List&lt;Integer&gt; counts</i>としておく。</p>
-                <pre class="code-block"><code>package com.example.demo;
+          <p><br>
+            <i>action="order"</i
+            >に対応するため、アノテーションは"/order"にする。また、returnには"redirect:/"を指定するため、型宣言はStringである。<i>@RequestParam</i>の扱いが難しいので、ここでは<i
+              >List&lt;Integer&gt; ids</i
+            >と<i>List&lt;Integer&gt; counts</i>としておく。
+          </p>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.util.List;
 import java.util.Map;
@@ -411,33 +595,51 @@ public class CakeShop {
 <span class="diff-add">+   }</span>
 }</code></pre>
 
-                <details>
-                    <summary>RequestParamの型についての細かい説明を開く</summary>
-                    <div class="details-content">
-                        <p><i>cakeshop.html</i>の<i>&lt;form&gt;</i>では、現在「モンブラン、アップルパイ、チーズケーキ、ガトーショコラ」の４つの行が表示され、それぞれ注文数が<i>name="count"</i>で設定されている。ここで、submitのボタンを押すと<i>action="/order"</i>としてコントローラーに"count"の値達が渡ることになるが、コントローラー側から見た時、渡されたデータは<i>Map&lt;String, List&lt;Object&gt;&gt;</i>のような型で{"count", [モンブランのcount, アップルパイのcount, チーズケーキのcount, ガトーショコラのcount]}のようになっている。そのため、<i>@RequestParam("count")</i>でcountの値を受け取ろうとすると、[モンブランのcount,...]が渡されるため、Listとして受け取ることで対処する。</p>
-                    </div>
-                </details>
+          <details>
+            <summary>RequestParamの型についての細かい説明を開く</summary>
+            <div class="details-content">
+              <p>この説明も課題を解く本題とずれる説明を含むため、興味がある人だけが読めばよい。<br>
+                これまでの授業資料では、RequestParamの型はStringやintなどの単純な型であることが多かった。しかし、今回のように複数の値を受け取る必要がある場合、RequestParamの型はListやMapなどのコレクション型になることがある。ということがわかればよい。<br>
+                <i>cakeshop.html</i
+                >の<i>&lt;form&gt;</i>では、現在「モンブラン、アップルパイ、チーズケーキ、ガトーショコラ」の４つの行が表示され、それぞれ注文数が<i>name="count"</i>で設定されている。ここで、submitのボタンを押すと<i>action="/order"</i>としてコントローラーに"count"の値達が渡ることになるが、コントローラー側から見た時、渡されたデータは<i
+                  >Map&lt;String, List&lt;Object&gt;&gt;</i
+                >のような型で{"count", [モンブランのcount, アップルパイのcount,
+                チーズケーキのcount,
+                ガトーショコラのcount]}のようになっている。そのため、<i>@RequestParam("count")</i>でcountの値を受け取ろうとすると、[モンブランのcount,...]が渡されるため、Listとして受け取ることで対処する。
+              </p>
+            </div>
+          </details>
 
-                <p>ここで、</p>
-                <pre class="code-block"><code>@RequestMapping("/order")
+          <p><br>ここで、</p>
+          <pre class="code-block"><code>@RequestMapping("/order")
     String order(@RequestParam("id") List&lt;Integer&gt; ids, @RequestParam("count") List&lt;Integer&gt; counts) {
 <span class="diff-add">+       for(int i = 0; i&lt;counts.size(); i++){</span>
 <span class="diff-add">+           System.out.println(counts.get(i));</span>
 <span class="diff-add">+       }</span>
         return "redirect:/";
     }</code></pre>
-                <p>とすると、モンブラン、アップルパイ、チーズケーキ、ガトーショコラの注文数をそれぞれ0,1,0,2などにした時、</p>
-                <pre class="code-block"><code>0
+          <p>
+            とすると、モンブラン、アップルパイ、チーズケーキ、ガトーショコラの注文数をそれぞれ0,1,0,2などにした時、
+          </p>
+          <pre class="code-block"><code>0
 1
 0
 2</code></pre>
-                <p>とターミナルに出力されることから、countsにはこの順でcountの値が格納されていることがわかる。また、idについても同様である。</p>
+          <p>
+            とターミナルに出力されることから、countsにはこの順でcountの値が格納されていることがわかる。また、idについても同様である。
+          </p>
 
-                <h3 id="step2-3">3, 注文データに対するループ処理の追加</h3>
-                <p>フォームから送信された配列データ（リスト）を受け取った後、どのケーキが何個注文されたのかを把握し、データベースに保存する準備をする必要がある。<br>
-                <a href="#step2-2" class="in-page-link">先ほど確認した通り</a>、引数 <code>counts</code> にはフォームにあるケーキの順番通りに注文数が格納されている。そのため、リストの要素数分だけ <code>for</code> ループを回し、注文数が0より大きい（つまり実際に注文された）ケーキについてのみ、データベースへ記録するためのDAOのメソッドを呼び出すように処理を記述する。</p>
-                <p><i>CakeShop.java</i></p>
-                <pre class="code-block"><code>    @RequestMapping("/order")
+          <h3 id="step2-3">3, 注文データに対するループ処理の追加</h3>
+          <p>
+            フォームから送信された配列データ（リスト）を受け取った後、どのケーキが何個注文されたのかを把握し、データベースに保存する準備をする必要がある。<br />
+            <a href="#step2-2" class="in-page-link">先ほど確認した通り</a>、引数
+            <code>counts</code>
+            にはフォームにあるケーキの順番通りに注文数が格納されている。そのため、リストの要素数分だけ
+            <code>for</code>
+            ループを回し、注文数が0より大きい（つまり実際に注文された）ケーキについてのみ、データベースへ記録するためのDAOのメソッドを呼び出すように処理を記述する。
+          </p>
+          <p><i>CakeShop.java</i></p>
+          <pre class="code-block"><code>    @RequestMapping("/order")
     String order(@RequestParam("id") List&lt;Integer&gt; ids,@RequestParam("count") List&lt;Integer&gt; counts) {
 <span class="diff-del">-       // まだ何も処理を書いてない。</span>
 <span class="diff-add">+       for(int i = 0; i&lt;counts.size(); i++){</span>
@@ -448,11 +650,18 @@ public class CakeShop {
         return "redirect:/";
     }</code></pre>
 
-                <h3>4, DAOへのメソッド追加に向けた準備</h3>
-                <p>コントローラー側で注文データを受け取り、必要なデータだけを抽出する準備が整った。次は、データベースへ実際にデータを保存するための処理をDAOに追加していく。<br>
-                <a href="#assignment-text" class="in-page-link">課題文の通り</a>、今回は「注文時刻テーブル <code>o_time</code>」と「注文テーブル <code>o_qtt</code>」の2つのテーブルにデータをINSERTする必要がある。まずは現状の <i>CakeDao.java</i> 全体を確認し、どこに新しいメソッドを追加すべきかを把握する。</p>
-                <p><i>CakeDao.java</i></p>
-                <pre class="code-block"><code>package com.example.demo;
+          <h3>4, DAOへのメソッド追加に向けた準備</h3>
+          <p>
+            コントローラー側で注文データを受け取り、必要なデータだけを抽出する準備が整った。次は、データベースへ実際にデータを保存するための処理をDAOに追加していく。<br />
+            <a href="#assignment-text" class="in-page-link">課題文の通り</a
+            >、今回は「注文時刻テーブル <code>o_time</code>」と「注文テーブル
+            <code>o_qtt</code
+            >」の2つのテーブルにデータをINSERTする必要がある。まずは現状の
+            <i>CakeDao.java</i>
+            全体を確認し、どこに新しいメソッドを追加すべきかを把握する。
+          </p>
+          <p><i>CakeDao.java</i></p>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -502,24 +711,37 @@ public class CakeDao {
     }
 }</code></pre>
 
-                <h3>5, 新しいメソッドを作る（注文時刻テーブルへの保存）</h3>
-                <p>まずは、注文時刻テーブル <code>o_time</code> に注文のIDを登録するための新しいメソッド <code>orderT</code> を作成する。このテーブルにはIDのみをJava側から渡し、時刻（time）はデータベース側のデフォルト制約によって自動的に現在時刻が設定されるようにする。<br>
-                過去の資料（3.3節）で紹介されているINSERTの基本形を思い出し、それを応用して実装する。</p>
-                
-                <details>
-                    <summary>参考：3.3節で紹介されているコード</summary>
-                    <div class="details-content">
-                        <pre class="code-block"><code>int newcake(String name, int price) {
+          <h3>5, 新しいメソッドを作る（注文時刻テーブルへの保存）</h3>
+          <p>
+            まずは、注文時刻テーブル
+            <code>o_time</code> に注文のIDを登録するための新しいメソッド
+            <code>orderT</code>
+            を作成する。このテーブルにはIDのみをJava側から渡し、時刻（time）はデータベース側のデフォルト制約によって自動的に現在時刻が設定されるようにする。<br />
+            過去の資料（3.3節）で紹介されているINSERTの基本形を思い出し、それを応用して実装する。
+          </p>
+
+          <details>
+            <summary>参考：3.3節で紹介されているコード</summary>
+            <div class="details-content">
+              <pre
+                class="code-block"
+              ><code>int newcake(String name, int price) {
     String sql = "INSERT INTO cake(name, price) VALUES(?, ?)";
     int count = jdbcTemplate.update(sql, name, price);
     return count;
 }</code></pre>
-                    </div>
-                </details>
-                
-                <p>上記のコードを参考に、<i>CakeDao.java</i> にメソッドを追加する。<code>INSERT INTO o_time(id) VALUES(?)</code> というSQL文を用意し、コントローラーから受け取る文字列型の <code>time_id</code> をプレースホルダ <code>?</code> に当てはめて実行する。</p>
-                <p><i>CakeDao.java</i></p>
-                <pre class="code-block"><code>package com.example.demo;
+            </div>
+          </details>
+
+          <p>
+            上記のコードを参考に、<i>CakeDao.java</i>
+            にメソッドを追加する。<code>INSERT INTO o_time(id) VALUES(?)</code>
+            というSQL文を用意し、コントローラーから受け取る文字列型の
+            <code>time_id</code> をプレースホルダ
+            <code>?</code> に当てはめて実行するようにする。<br>
+          </p>
+          <p><i>CakeDao.java</i></p>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.util.List;
 import java.util.Map;
@@ -575,13 +797,23 @@ public class CakeDao {
 <span class="diff-add">+       return ("" + count_time);</span>
 <span class="diff-add">+   }</span>
 }</code></pre>
-                <p>なお、import文が現状からいくつか追加されているが、これらはSpring Bootの環境によっては自動で追加されるか、あるいは今後必要になる可能性があるため記述されていると解釈してよい。</p>
+          <p>
+            なお、import文が現状からいくつか追加されているが、これらはSpring
+            Bootの環境によっては自動で追加されるか、あるいは今後必要になる可能性があるため記述されていると解釈してよい。
+          </p>
 
-                <h3>6, 新しいメソッドを作る（注文テーブルへの保存）</h3>
-                <p>次に、注文テーブル <code>o_qtt</code> にデータを登録する <code>orderQtt</code> メソッドを追加する。<br>
-                このテーブルには、「どの注文（time_id）で」「どのケーキ（cake_id）が」「何個（quantity）」注文されたかという3つの情報を記録する。したがって、メソッドの引数にはこれら3つを受け取るようにし、<code>INSERT INTO o_qtt(time_id, cake_id, quantity) VALUES(?, ?, ?)</code> というSQLを実行する。</p>
-                <p><i>CakeDao.java</i></p>
-                <pre class="code-block"><code>package com.example.demo;
+          <h3>6, 新しいメソッドを作る（注文テーブルへの保存）</h3>
+          <p>
+            次に、注文テーブル <code>o_qtt</code> にデータを登録する
+            <code>orderQtt</code> メソッドを追加する。<br />
+            このテーブルには、「どの注文（time_id）で」「どのケーキ（cake_id）が」「何個（quantity）」注文されたかという3つの情報を記録する。したがって、メソッドの引数にはこれら3つを受け取るようにし、<code
+              >INSERT INTO o_qtt(time_id, cake_id, quantity) VALUES(?, ?,
+              ?)</code
+            >
+            というSQLを実行するようにする。<br>
+          </p>
+          <p><i>CakeDao.java</i></p>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.util.List;
 import java.util.Map;
@@ -644,16 +876,39 @@ public class CakeDao {
 <span class="diff-add">+   }</span>
 }</code></pre>
 
-                <h3>7, コントローラーを完成させる</h3>
-                <p>DAOに必要な2つのメソッドが用意できたので、最後に <i>CakeShop.java</i> のコントローラーに戻り、これらを呼び出す処理を完成させる。<br>
-                処理の流れとしては以下のようになる。</p>
-                <ol class="indent">
-                    <li><a href="#assignment-text" class="in-page-link">課題文で指定された通り</a>、2.4節で紹介された <code>UUID</code> を使ってランダムな文字列（ID）を生成する。このIDが、今回の1回の注文操作全体を識別するための <code>time_id</code> となる。</li>
-                    <li>生成した <code>time_id</code> を用いて、DAOの <code>orderT</code> メソッドを1回だけ呼び出し、注文時刻テーブルにIDを登録する。</li>
-                    <li>その後、<a href="#step2-3" class="in-page-link">先ほど作成した <code>for</code> ループ</a>の中で、注文数が0より大きいケーキを見つけるたびにDAOの <code>orderQtt</code> メソッドを呼び出す。このとき、どのケーキが何個注文されたかという情報とともに、同じ <code>time_id</code> を渡すことで、これらのケーキが「同じ1回の注文」で買われたものであることをデータベースに関連付ける。</li>
-                </ol>
-                <p><i>CakeShop.java</i></p>
-                <pre class="code-block"><code>package com.example.demo;
+          <h3>7, コントローラーを完成させる</h3>
+          <p>
+            DAOに必要な2つのメソッドが用意できたので、最後に
+            <i>CakeShop.java</i>
+            のコントローラーに戻り、これらを呼び出す処理を完成させる。<br />
+            処理の流れとしては以下のようになる。
+          </p>
+          <ol class="indent">
+            <li>
+              <a href="#assignment-text" class="in-page-link"
+                >課題文で指定された通り</a
+              >、2.4節で紹介された
+              <code>UUID</code>
+              を使ってランダムな文字列（ID）を生成する。このIDが、今回の1回の注文操作全体を識別するための
+              <code>time_id</code> となる。
+            </li>
+            <li>
+              生成した <code>time_id</code> を用いて、DAOの
+              <code>orderT</code>
+              メソッドを1回だけ呼び出し、注文時刻テーブルにIDを登録する。
+            </li>
+            <li>
+              その後、<a href="#step2-3" class="in-page-link"
+                >先ほど作成した <code>for</code> ループ</a
+              >の中で、注文数が0より大きいケーキを見つけるたびにDAOの
+              <code>orderQtt</code>
+              メソッドを呼び出す。このとき、どのケーキが何個注文されたかという情報とともに、同じ
+              <code>time_id</code>
+              を渡すことで、これらのケーキが「同じ1回の注文」で買われたものであることをデータベースに関連付ける。
+            </li>
+          </ol>
+          <p><i>CakeShop.java</i></p>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.util.List;
 import java.util.Map;
@@ -700,22 +955,36 @@ public class CakeShop {
         return "redirect:/";
     }
 }</code></pre>
-                <p>これで、フォームから注文を送信した際に、データベースの2つのテーブルに対して適切にデータが記録される機能が完成した。</p>
-            </div>
-        </section>
+          <p>
+            これで、フォームから注文を送信した際に、データベースの2つのテーブルに対して適切にデータが記録される機能が完成した。
+          </p>
+        </div>
+      </section>
 
-        <!-- ステップ3 -->
-        <section class="step-section card" id="step3">
-            <h2 class="step-title">ステップ３　注文id, 時刻, 商品名, 単価, 個数を売上データとして受け取る</h2>
-            <p class="step-goal">→ コントローラーからDAOメソッドを呼び出し、データを取得できるようにする</p>
-            <p class="step-scope">作業範囲： <i>/demo/CakeShop.java</i></p>
+      <!-- ステップ3 -->
+      <section class="step-section card" id="step3">
+        <h2 class="step-title">
+          ステップ３　注文id, 時刻, 商品名, 単価, 個数を売上データとして受け取る
+        </h2>
+        <p class="step-goal">
+          →
+          コントローラーからDAOメソッドを呼び出し、データを取得できるようにする
+        </p>
+        <p class="step-scope">作業範囲： <i>/demo/CakeShop.java</i></p>
 
-            <div class="step-content">
-                <h3>1, 現状の確認</h3>
-                <p>前提として、<a href="#step4" class="in-page-link">ステップ４「売上データを表示する」</a>の部分でHTML側から売上データを確認・利用するためには、コントローラーから <code>model.addAttribute()</code> を利用してデータを渡す必要がある。詳しくは過去の授業資料におけるMVCモデルの説明を参照してほしい。<br>
-                そのため、既に <code>model.addAttribute</code> を扱っている <code>home()</code> メソッドに、今回は処理を追加していく。</p>
-                <p><i>CakeShop.java</i></p>
-                <pre class="code-block"><code>package com.example.demo;
+        <div class="step-content">
+          <h3>1, 現状の確認</h3>
+          <p>
+            前提として、<a href="#step4" class="in-page-link"
+              >ステップ４「売上データを表示する」</a
+            >の部分でHTML側から売上データを確認・利用するためには、コントローラーから
+            <code>model.addAttribute()</code>
+            を利用してデータを渡す必要がある。詳しくは過去の授業資料におけるMVCモデルの説明を参照してほしい。<br />
+            そのため、既に <code>model.addAttribute</code> を扱っている
+            <code>home()</code> メソッドに、今回は処理を追加していく。
+          </p>
+          <p><i>CakeShop.java</i></p>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.util.List;
 import java.util.Map;
@@ -762,11 +1031,19 @@ public class CakeShop {
     }
 }</code></pre>
 
-                <h3>2, DAOメソッドの確認</h3>
-                <p>実は、授業資料内で既に売上データをデータベースから取得するSQL文は紹介されている。<a href="#assignment-text" class="in-page-link">課題文にも「3つのテーブルを結合した結果を表示すればよい.」</a>と書いてあるため、3.2節で提示されている"3つのテーブルの結合"から <code>select10b()</code> メソッドを利用する。<br>
-                なお、<i>CakeDao.java</i> を参照すると既に <code>select10b</code> を実装してあるはずである。</p>
-                <p><i>CakeDao.java</i></p>
-                <pre class="code-block"><code>package com.example.demo;
+          <h3>2, DAOメソッドの確認</h3>
+          <p>
+            実は、授業資料内で既に売上データをデータベースから取得するSQL文は紹介されている。<a
+              href="#assignment-text"
+              class="in-page-link"
+              >課題文にも「3つのテーブルを結合した結果を表示すればよい.」</a
+            >と書いてあるため、3.2節で提示されている"3つのテーブルの結合"から
+            <code>select10b()</code> メソッドを利用する。<br />
+            なお、<i>CakeDao.java</i> を参照すると既に
+            <code>select10b</code> を実装してあるはずである。
+          </p>
+          <p><i>CakeDao.java</i></p>
+          <pre class="code-block"><code>package com.example.demo;
 
 import java.util.List;
 import java.util.Map;
@@ -830,19 +1107,27 @@ public class CakeDao {
     }
 
 }</code></pre>
-                <p>CakeShop.javaからこのメソッドを呼び出し、返り値を適切に処理するだけでよい。返り値の型は <code>List&lt;Map&lt;String, Object&gt;&gt;</code> である。</p>
+          <p>
+            CakeShop.javaからこのメソッドを呼び出し、返り値を適切に処理するだけでよい。返り値の型は
+            <code>List&lt;Map&lt;String, Object&gt;&gt;</code> である。
+          </p>
 
-                <h3>3, コントローラーの調整</h3>
-                <p>現在のCakeShop.javaにおける <code>home()</code> メソッドは以下のようになっている。</p>
-                <pre class="code-block"><code>    @RequestMapping("/")
+          <h3>3, コントローラーの調整</h3>
+          <p>
+            現在のCakeShop.javaにおける
+            <code>home()</code> メソッドは以下のようになっている。
+          </p>
+          <pre class="code-block"><code>    @RequestMapping("/")
     String home(Model model) {
         List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
         // System.out.println(cakeList); &lt;--確認コード
         model.addAttribute("cakeList", cakeList);
         return "cakeshop3"; // ビューの名前
     }</code></pre>
-                <p>ここで、まずはデータベースから売上データを取得するための処理を追加する。</p>
-                <pre class="code-block"><code>    @RequestMapping("/")
+          <p>
+            ここで、まずはデータベースから売上データを取得するための処理を追加する。
+          </p>
+          <pre class="code-block"><code>    @RequestMapping("/")
     String home(Model model) {
         List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
         // System.out.println(cakeList); &lt;--確認コード
@@ -852,8 +1137,12 @@ public class CakeDao {
         model.addAttribute("cakeList", cakeList);
         return "cakeshop3"; // ビューの名前
     }</code></pre>
-                <p>これで、データベースから売上データを取得し、コントローラーで <code>salesList</code> として受け取る部分までできた。あとは、HTMLにこの売上データを手渡しするだけである。</p>
-                <pre class="code-block"><code>    @RequestMapping("/")
+          <p>
+            これで、データベースから売上データを取得し、コントローラーで
+            <code>salesList</code>
+            として受け取る部分までできた。あとは、HTMLにこの売上データを手渡しするだけである。
+          </p>
+          <pre class="code-block"><code>    @RequestMapping("/")
     String home(Model model) {
         List&lt;Map&lt;String, Object&gt;&gt; cakeList = dao.select7();
         // System.out.println(cakeList); &lt;--確認コード
@@ -863,21 +1152,38 @@ public class CakeDao {
         model.addAttribute("cakeList", cakeList);
         return "cakeshop3"; // ビューの名前
     }</code></pre>
-                <p>これで、HTML側から "salesList" という名前で売上データを利用できるようになった。</p>
-            </div>
-        </section>
+          <p>
+            これで、HTML側から "salesList"
+            という名前で売上データを利用できるようになった。
+          </p>
+        </div>
+      </section>
 
-        <!-- ステップ4 -->
-        <section class="step-section card" id="step4">
-            <h2 class="step-title">ステップ４　売上データを表示する</h2>
-            <div class="step-content">
-                <p>実はこのステップが一番簡単である。まず、完成例をブラウザ上でどのように表示されるか確認する。授業中に「グルーピングはとても難しいのでしなくていい。一行ずつ表示できれば正解です」と説明があったため、それを踏まえた目標とする。</p>
-                
-                <iframe class="preview-box" srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><table><thead><tr><th>注文ID</th><th>時刻</th><th>商品名</th><th>単価</th><th>個数</th></tr></thead><tbody><tr><td>ORDER001</td><td>12:34:00</td><td>モンブラン</td><td>460</td><td>1</td></tr><tr><td>ORDER001</td><td>12:34:00</td><td>アップルパイ</td><td>490</td><td>1</td></tr><tr><td>ORDER002</td><td>12:36:00</td><td>チーズケーキ</td><td>480</td><td>2</td></tr><tr><td>ORDER003</td><td>12:40:00</td><td>ガトーショコラ</td><td>550</td><td>2</td></tr><tr><td>ORDER003</td><td>12:40:00</td><td>アップルパイ</td><td>490</td><td>3</td></tr></tbody></table>' onload="this.style.height = this.contentWindow.document.body.scrollHeight + 35 + 'px';" style="border: none;" scrolling="no"></iframe>
-                
-                <p>これを目標に制作する。<br>
-                現状のHTMLコードを確認する。</p>
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+      <!-- ステップ4 -->
+      <section class="step-section card" id="step4">
+        <h2 class="step-title">ステップ４　売上データを表示する</h2>
+        <div class="step-content">
+          <p>
+            実はこのステップが一番簡単である。まず、完成例をブラウザ上でどのように表示されるか確認する。授業中に「グルーピングはとても難しいのでしなくていい。一行ずつ表示できれば正解です」と説明があったため、それを踏まえた目標とする。
+          </p>
+
+          <p><strong>HTMLのサンプルページ8</strong></p>
+          <iframe
+            class="preview-box"
+            srcdoc='<meta charset="UTF-8"><style>table { border-collapse: collapse; } th, td { border: 1px solid black; padding: 5px; }</style><table><thead><tr><th>注文ID</th><th>時刻</th><th>商品名</th><th>単価</th><th>個数</th></tr></thead><tbody><tr><td>ORDER001</td><td>12:34:00</td><td>モンブラン</td><td>460</td><td>1</td></tr><tr><td>ORDER001</td><td>12:34:00</td><td>アップルパイ</td><td>490</td><td>1</td></tr><tr><td>ORDER002</td><td>12:36:00</td><td>チーズケーキ</td><td>480</td><td>2</td></tr><tr><td>ORDER003</td><td>12:40:00</td><td>ガトーショコラ</td><td>550</td><td>2</td></tr><tr><td>ORDER003</td><td>12:40:00</td><td>アップルパイ</td><td>490</td><td>3</td></tr></tbody></table>'
+            onload="
+              this.style.height =
+                this.contentWindow.document.body.scrollHeight + 35 + 'px'
+            "
+            style="border: none"
+            scrolling="no"
+          ></iframe>
+
+          <p>
+            これを目標に制作する。<br />
+            現状のHTMLコードを確認する。
+          </p>
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
 
 &lt;head&gt;
@@ -904,10 +1210,10 @@ public class CakeDao {
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
                         &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;
-		     &lt;td&gt;
-			  &lt;input type="text" name="count"&gt;
-			  &lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
-		     &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;input type="text" name="count"&gt;
+                            &lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+                        &lt;/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -917,8 +1223,17 @@ public class CakeDao {
 &lt;/body&gt;
 
 &lt;/html&gt;</code></pre>
-                <p>新しく売上データ用の <code>&lt;table&gt;</code> を追加するが、現状のコードで利用されている <code>${cakeList}</code> を確認すると、CakeShop.javaでは <code>List&lt;Map&lt;String, Object&gt;&gt; cakeList</code> として宣言されており、今回渡した <code>salesList</code> とまったく同じ構造体だとわかる。そのため、今回は元々あるtableとほとんど同じ作りにするだけでよい。</p>
-                <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
+          <p>
+            新しく売上データ用の
+            <code>&lt;table&gt;</code>
+            を追加するが、現状のコードで利用されている
+            <code>${cakeList}</code> を確認すると、CakeShop.javaでは
+            <code>List&lt;Map&lt;String, Object&gt;&gt; cakeList</code>
+            として宣言されており、今回渡した
+            <code>salesList</code>
+            とまったく同じ構造体だとわかる。そのため、今回は元々あるtableとほとんど同じ作りにするだけでよい。
+          </p>
+          <pre class="code-block"><code>&lt;!DOCTYPE HTML&gt;
 &lt;html xmlns:th="http://www.thymeleaf.org"&gt;
 
 &lt;head&gt;
@@ -945,10 +1260,10 @@ public class CakeDao {
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
                         &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;
-			 &lt;td&gt;
-			&lt;input type="text" name="count"&gt;
-			&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
-		      &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;input type="text" name="count"&gt;
+                            &lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+                        &lt;/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -980,28 +1295,37 @@ public class CakeDao {
 &lt;/body&gt;
 
 &lt;/html&gt;</code></pre>
-                <p>これで完成である。実際の環境で表示されることを確認して、「注文する」を押した時に売上データが増えることを確認しよう。</p>
-            </div>
-        </section>
+          <p>
+            これで完成である。実際の環境で表示されることを確認して、「注文する」を押した時に売上データが増えることを確認しよう。
+          </p>
+        </div>
+      </section>
 
-        <!-- ステップ5 -->
-        <section class="step-section card" id="step5">
-            <h2 class="step-title">ステップ５　ステップアップ（見た目の改善）</h2>
-            <div class="step-content">
-                <p>見た目が少し素っ気ないと思うので、簡単にオシャレなメニュー表に近づけられる技術を提示する（課題で直接要求されているわけではない）。<br>
-                HTMLの <code>&lt;head&gt;</code> 内にCSSファイルを読み込む記述を追加する。</p>
-                <pre class="code-block"><code>&lt;head&gt;
+      <!-- ステップ5 -->
+      <section class="step-section card" id="step5">
+        <h2 class="step-title">ステップ５　ステップアップ（見た目の改善）</h2>
+        <div class="step-content">
+          <p>
+            見た目が少し素っ気ないと思うので、簡単にオシャレなメニュー表に近づけられる技術を提示する（課題で直接要求されているわけではない）。<br />
+            HTMLの
+            <code>&lt;head&gt;</code> 内にCSSファイルを読み込む記述を追加する。
+          </p>
+          <pre class="code-block"><code>&lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;ケーキ通販&lt;/title&gt;
 &lt;/head&gt;</code></pre>
-                <p>この部分を以下のように変更する。</p>
-                <pre class="code-block"><code>&lt;head&gt;
+          <p>この部分を以下のように変更する。</p>
+          <pre class="code-block"><code>&lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;ケーキ通販&lt;/title&gt;
 <span class="diff-add">+   &lt;link rel="stylesheet" th:href="@{/cakeshop.css}" /&gt;</span>
 &lt;/head&gt;</code></pre>
-                <p>そして、<code>./src/resources/static/</code>（あるいは画像などの静的ファイルを置くフォルダ）に <code>cakeshop.css</code> というファイルを作成し、下記のコードをそのままコピーペーストする。</p>
-                <pre class="code-block"><code>table {
+          <p>
+            そして、<code>./src/resources/static/</code>（あるいは画像などの静的ファイルを置くフォルダ）に
+            <code>cakeshop.css</code>
+            というファイルを作成し、下記のコードをそのままコピーペーストする。
+          </p>
+          <pre class="code-block"><code>table {
     border-collapse: collapse;
     margin-bottom: 20px;
 
@@ -1067,14 +1391,14 @@ input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
 }</code></pre>
-                <p>これで、デザインが適用され少し本格的な見た目になる。</p>
-            </div>
-        </section>
+          <p>これで、デザインが適用され少し本格的な見た目になる。</p>
+        </div>
+      </section>
     </main>
 
     <!-- 戻るボタン -->
     <button id="back-button" class="back-button">元の場所に戻る</button>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
