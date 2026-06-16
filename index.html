@@ -158,7 +158,7 @@
                     &lt;tr th:each="cake : ${cakeList}"&gt;
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
-		  &lt;td&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt/td&gt;
+		      &lt;td&gt;&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;&lt/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
@@ -278,9 +278,9 @@
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
 <span class="diff-del">-                       &lt;td&gt;&lt;input type="text" name="count" value="0"&gt;&lt;/td&gt;</span>
 <span class="diff-mod">+                       &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;</span>
-						&lt;td&gt;
-				&lt;input type="text" name="count"&gt;
-				&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+		&lt;td&gt;
+			&lt;input type="text" name="count"&gt;
+			&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
 			&lt;/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
@@ -904,10 +904,10 @@ public class CakeDao {
                         &lt;td th:text="${cake.name}"&gt;&lt;/td&gt;
                         &lt;td th:text="${cake.price}"&gt;&lt;/td&gt;
                         &lt;td&gt;&lt;input type="number" name="count" value="0" min="0"&gt;&lt;/td&gt;
-						&lt;td&gt;
-				&lt;input type="text" name="count"&gt;
-				&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
-			&lt;/td&gt;
+		&lt;td&gt;
+			&lt;input type="text" name="count"&gt;
+			&lt;input type="hidden" name="id" th:value="${cake.id}"&gt;
+		&lt;/td&gt;
                     &lt;/tr&gt;
                 &lt;/tbody&gt;
             &lt;/table&gt;
